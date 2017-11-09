@@ -11,10 +11,10 @@ namespace ggcvan.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        public DbSet<Event> Events { get; set; }
-        public DbSet<Game> Games { get; set; }
-        public DbSet<GameRank> GameRanks { get; set; }
-        public DbSet<Leaderboard> Leaderboards { get; set; }
+        //public DbSet<Event> Events { get; set; }
+        //public DbSet<Game> Games { get; set; }
+        //public DbSet<GameRank> GameRanks { get; set; }
+        //public DbSet<Leaderboard> Leaderboards { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

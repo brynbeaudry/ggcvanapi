@@ -11,9 +11,12 @@ namespace ggcvan.Data
     {
         public static void Initialize(ApplicationDbContext db)
         {
+            /*
             if (!db.Events.Any())            {
                 //seed, call this function from ADBC
             }
+            db.SaveChanges();
+            */
         }
     }
 }
