@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ggcvanapi.Models;
+using ggcvan.Models;
 using MySQL.Data.EntityFrameworkCore.Extensions;
 
-namespace ggcvanapi.Data
+namespace ggcvan.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

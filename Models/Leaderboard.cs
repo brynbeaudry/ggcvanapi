@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-namespace ggcvanapi.Models
+namespace ggcvan.Models
 {
     public class Leaderboard
     {

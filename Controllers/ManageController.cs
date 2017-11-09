@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ggcvanapi.Models;
-using ggcvanapi.Models.ManageViewModels;
-using ggcvanapi.Services;
+using ggcvan.Models;
+using ggcvan.Models.ManageViewModels;
+using ggcvan.Services;
 
-namespace ggcvanapi.Controllers
+namespace ggcvan.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]
@@ -495,7 +495,7 @@ namespace ggcvanapi.Controllers
         {
             return string.Format(
                 AuthenicatorUriFormat,
-                _urlEncoder.Encode("ggcvanapi"),
+                _urlEncoder.Encode("ggcvan"),
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }

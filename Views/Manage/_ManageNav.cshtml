@@ -1,4 +1,4 @@
-﻿@using ggcvanapi.Views.Manage
+﻿@using ggcvan.Views.Manage
 @inject SignInManager<ApplicationUser> SignInManager
 @{
     var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();

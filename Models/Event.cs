@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ggcvanapi.Models
+namespace ggcvan.Models
 {
     public class Event
     {

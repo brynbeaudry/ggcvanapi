@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ggcvanapi.Models.ManageViewModels
+namespace ggcvan.Models.ManageViewModels
 {
     public class ChangePasswordViewModel
     {

@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-namespace ggcvanapi.Models
+namespace ggcvan.Models
 {
     public class GameRank
     {

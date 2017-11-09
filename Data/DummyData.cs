@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using ggcvanapi.Models;
-using ggcvanapi.Data;
+using ggcvan.Models;
+using ggcvan.Data;
 
-namespace ggcvanapi.Data
+namespace ggcvan.Data
 {
     public class DummyData
     {

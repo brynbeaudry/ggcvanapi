@@ -1,6 +1,6 @@
 using System;
 
-namespace ggcvanapi.Models
+namespace ggcvan.Models
 {
     public class ErrorViewModel
     {

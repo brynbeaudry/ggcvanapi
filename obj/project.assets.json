@@ -13863,11 +13863,11 @@
       "hideWarningsAndErrors": true
     },
     "restore": {
-      "projectUniqueName": "D:\\ggcvanapi\\ggcvanapi.csproj",
-      "projectName": "ggcvanapi",
-      "projectPath": "D:\\ggcvanapi\\ggcvanapi.csproj",
+      "projectUniqueName": "D:\\ggcvan\\ggcvan.csproj",
+      "projectName": "ggcvan",
+      "projectPath": "D:\\ggcvan\\ggcvan.csproj",
       "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
-      "outputPath": "D:\\ggcvanapi\\obj\\",
+      "outputPath": "D:\\ggcvan\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

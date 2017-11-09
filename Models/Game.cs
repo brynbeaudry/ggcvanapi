@@ -1,4 +1,4 @@
-namespace ggcvanapi.Models
+namespace ggcvan.Models
 {
     public class Game
     {

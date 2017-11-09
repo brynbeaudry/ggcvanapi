@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using ggcvanapi.Models;
+using ggcvan.Models;
 
-namespace ggcvanapi.Controllers
+namespace ggcvan.Controllers
 {
     public class HomeController : Controller
     {

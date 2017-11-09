@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ggcvanapi.Data;
-using ggcvanapi.Models;
-using ggcvanapi.Services;
+using ggcvan.Data;
+using ggcvan.Models;
+using ggcvan.Services;
 
-namespace ggcvanapi
+namespace ggcvan
 {
     public class Startup
     {
@@ -26,7 +26,7 @@ namespace ggcvanapi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var sqlConnectionString = Configuration.GetConnectionString("DataAccessMySqlProvider");
+            //var sqlConnectionString = Configuration.GetConnectionString("DataAccessMySqlProvider");
             
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));

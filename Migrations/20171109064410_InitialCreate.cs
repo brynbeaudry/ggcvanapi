@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Collections.Generic;
 
-namespace ggcvanapi.Migrations
+namespace ggcvan.Migrations
 {
     public partial class InitialCreate : Migration
     {

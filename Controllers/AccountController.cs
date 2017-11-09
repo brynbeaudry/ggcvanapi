@@ -10,11 +10,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using ggcvanapi.Models;
-using ggcvanapi.Models.AccountViewModels;
-using ggcvanapi.Services;
+using ggcvan.Models;
+using ggcvan.Models.AccountViewModels;
+using ggcvan.Services;
 
-namespace ggcvanapi.Controllers
+namespace ggcvan.Controllers
 {
     [Authorize]
     [Route("[controller]/[action]")]

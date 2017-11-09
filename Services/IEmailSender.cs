@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ggcvanapi.Services
+namespace ggcvan.Services
 {
     public interface IEmailSender
     {
