@@ -23,5 +23,11 @@ namespace ggcvanapi.Data
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
+
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Game> Games {get;set;}
+        public DbSet<GameRank> GameRanks { get; set; }
+        public DbSet<Leaderboard> Leaderboards { get; set; }
+
     }
 }
