@@ -1,0 +1,12 @@
+/Users/brynbeaudry/P/ggcvanapi/bin/Debug/netcoreapp2.0/app.db
+/Users/brynbeaudry/P/ggcvanapi/bin/Debug/netcoreapp2.0/ggcvanapi.deps.json
+/Users/brynbeaudry/P/ggcvanapi/bin/Debug/netcoreapp2.0/ggcvanapi.runtimeconfig.json
+/Users/brynbeaudry/P/ggcvanapi/bin/Debug/netcoreapp2.0/ggcvanapi.runtimeconfig.dev.json
+/Users/brynbeaudry/P/ggcvanapi/bin/Debug/netcoreapp2.0/ggcvanapi.dll
+/Users/brynbeaudry/P/ggcvanapi/bin/Debug/netcoreapp2.0/ggcvanapi.pdb
+/Users/brynbeaudry/P/ggcvanapi/obj/Debug/netcoreapp2.0/ggcvanapi.csproj.CoreCompileInputs.cache
+/Users/brynbeaudry/P/ggcvanapi/obj/Debug/netcoreapp2.0/UserSecretsAssemblyInfo.cs
+/Users/brynbeaudry/P/ggcvanapi/obj/Debug/netcoreapp2.0/ggcvanapi.AssemblyInfoInputs.cache
+/Users/brynbeaudry/P/ggcvanapi/obj/Debug/netcoreapp2.0/ggcvanapi.AssemblyInfo.cs
+/Users/brynbeaudry/P/ggcvanapi/obj/Debug/netcoreapp2.0/ggcvanapi.dll
+/Users/brynbeaudry/P/ggcvanapi/obj/Debug/netcoreapp2.0/ggcvanapi.pdb
