@@ -10,16 +10,32 @@ namespace ggcvan.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Game",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(type: "longtext", nullable: true),
+                    ImageUrl = table.Column<string>(type: "longtext", nullable: true),
+                    NumberOfPlayers = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<string>(type: "longtext", nullable: true),
+                    Url = table.Column<string>(type: "longtext", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Game", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Events",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ApplicationUserId = table.Column<int>(type: "int", nullable: false),
-                    CreatorForeignKey = table.Column<string>(type: "varchar(127)", nullable: true),
                     Description = table.Column<string>(type: "longtext", nullable: true),
                     EndTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    EventCreatorFK = table.Column<int>(type: "int", nullable: false),
+                    EventCreator = table.Column<string>(type: "varchar(127)", nullable: true),
+                    GameId = table.Column<int>(type: "int", nullable: true),
                     Host = table.Column<string>(type: "longtext", nullable: true),
                     Latitude = table.Column<double>(type: "double", nullable: false),
                     LocationDescription = table.Column<string>(type: "longtext", nullable: true),
@@ -31,9 +47,15 @@ namespace ggcvan.Migrations
                 {
                     table.PrimaryKey("PK_Events", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Events_AspNetUsers_CreatorForeignKey",
-                        column: x => x.CreatorForeignKey,
+                        name: "FK_Events_AspNetUsers_EventCreator",
+                        column: x => x.EventCreator,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Events_Game_GameId",
+                        column: x => x.GameId,
+                        principalTable: "Game",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -68,9 +90,14 @@ namespace ggcvan.Migrations
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Events_CreatorForeignKey",
+                name: "IX_Events_EventCreator",
                 table: "Events",
-                column: "CreatorForeignKey");
+                column: "EventCreator");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_GameId",
+                table: "Events",
+                column: "GameId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -80,6 +107,9 @@ namespace ggcvan.Migrations
 
             migrationBuilder.DropTable(
                 name: "Events");
+
+            migrationBuilder.DropTable(
+                name: "Game");
         }
     }
 }

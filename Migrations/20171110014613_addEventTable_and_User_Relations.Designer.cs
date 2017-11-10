@@ -11,7 +11,7 @@ using System;
 namespace ggcvan.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20171110011459_addEventTable_and_User_Relations")]
+    [Migration("20171110014613_addEventTable_and_User_Relations")]
     partial class addEventTable_and_User_Relations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -85,15 +85,13 @@ namespace ggcvan.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ApplicationUserId");
-
-                    b.Property<string>("CreatorForeignKey");
-
                     b.Property<string>("Description");
 
                     b.Property<DateTime>("EndTime");
 
-                    b.Property<int>("EventCreatorFK");
+                    b.Property<string>("EventCreator");
+
+                    b.Property<int?>("GameId");
 
                     b.Property<string>("Host");
 
@@ -109,7 +107,9 @@ namespace ggcvan.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatorForeignKey");
+                    b.HasIndex("EventCreator");
+
+                    b.HasIndex("GameId");
 
                     b.ToTable("Events");
                 });
@@ -125,6 +125,26 @@ namespace ggcvan.Migrations
                     b.HasIndex("EventId");
 
                     b.ToTable("EventGuests");
+                });
+
+            modelBuilder.Entity("ggcvan.Models.Game", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("ImageUrl");
+
+                    b.Property<int>("NumberOfPlayers");
+
+                    b.Property<string>("Title");
+
+                    b.Property<string>("Url");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Game");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -238,7 +258,11 @@ namespace ggcvan.Migrations
                 {
                     b.HasOne("ggcvan.Models.ApplicationUser", "Creator")
                         .WithMany("CreatedEvents")
-                        .HasForeignKey("CreatorForeignKey");
+                        .HasForeignKey("EventCreator");
+
+                    b.HasOne("ggcvan.Models.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId");
                 });
 
             modelBuilder.Entity("ggcvan.Models.EventGuest", b =>

@@ -33,11 +33,11 @@ namespace ggcvan.Data
             //Relations
 
             builder.Entity<Event>()
-            .Property<int>("EventCreatorFK");
+            .Property<string>("EventCreator");
             builder.Entity<Event>()
                 .HasOne(e => e.Creator)
                 .WithMany(e => e.CreatedEvents)
-                .HasForeignKey("CreatorForeignKey");
+                .HasForeignKey("EventCreator");
 
             builder.Entity<EventGuest>()
             .HasKey(eg => new { eg.ApplicationUserId, eg.EventId });
@@ -49,7 +49,11 @@ namespace ggcvan.Data
                 .HasOne(eg => eg.Guest)
                 .WithMany(a => a.JoinedEvents)
                 .HasForeignKey(eg => eg.ApplicationUserId);
+
+
         }
+
+        public DbSet<ggcvan.Models.ApplicationUser> ApplicationUser { get; set; }
 
     }
 }

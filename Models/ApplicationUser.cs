@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 namespace ggcvan.Models
 {
     // Add profile data for application users by adding properties to the ApplicationUser class
-    public class ApplicationUser : IdentityUser
+    public class ApplicationUser : IdentityUser 
     {   
         public String FullName { get; set; }
         public String FirstName { get; set; }

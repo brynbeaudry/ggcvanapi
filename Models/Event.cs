@@ -12,8 +12,6 @@ namespace ggcvan.Models
         public int Id { get; set; }
         public string Title { get; set; }
 
-        public int ApplicationUserId { get; set; }
-
         public ApplicationUser Creator { get; set; }
 
         [DataType(DataType.Date)]
@@ -35,6 +33,8 @@ namespace ggcvan.Models
         public string LocationDescription { get; set; }
 
         public List<EventGuest> EventGuests { get; set;}
+
+        public Game Game { get; set; }
 
     }
 }
