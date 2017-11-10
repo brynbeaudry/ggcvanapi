@@ -14,8 +14,8 @@ namespace ggcvan.Data
         public DbSet<Event> Events { get; set; }
         public DbSet<EventGuest> EventGuests { get; set; }
  
-        //public DbSet<Game> Games { get; set; }
-        //public DbSet<GameRank> GameRanks { get; set; }
+        public DbSet<Game> Games { get; set; }
+        //  public DbSet<GameRank> GameRanks { get; set; }
         //public DbSet<Leaderboard> Leaderboards { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
@@ -31,6 +31,12 @@ namespace ggcvan.Data
             // Add your customizations after calling base.OnModelCreating(builder);
 
             //Relations
+
+            builder.Entity<Event>()
+            .Property<int>("EventGame");
+            builder.Entity<Event>()
+                .HasOne(e => e.Game);
+
 
             builder.Entity<Event>()
             .Property<string>("EventCreator");
