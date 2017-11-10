@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ggcvan.Data;
 using ggcvan.Models;
-using Microsoft.AspNetCore.Authorization;
 
 namespace ggcvan.Controllers
 {
@@ -45,7 +44,6 @@ namespace ggcvan.Controllers
         }
 
         // GET: Users/Create
-        [Authorize(Roles ="Administrator")]
         public IActionResult Create()
         {
             return View();
@@ -56,7 +54,7 @@ namespace ggcvan.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserName,Email")] ApplicationUser applicationUser)
+        public async Task<IActionResult> Create([Bind("FullName,FirstName,LastName,Bio,Id,UserName,NormalizedUserName,Email,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] ApplicationUser applicationUser)
         {
             if (ModelState.IsValid)
             {

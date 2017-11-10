@@ -34,7 +34,12 @@ namespace ggcvan.Controllers
             }
 
             var @event = await _context.Events
+                .Include(m => m.Game)
+                .Include(m => m.EventGuests)
+                    .ThenInclude(eg => eg.ToArray())
                 .SingleOrDefaultAsync(m => m.Id == id);
+            //var @eventguests = await _context.Users.Where(u=> { })
+
             if (@event == null)
             {
                 return NotFound();
@@ -123,6 +128,8 @@ namespace ggcvan.Controllers
             {
                 return NotFound();
             }
+
+            
 
             var @event = await _context.Events
                 .SingleOrDefaultAsync(m => m.Id == id);

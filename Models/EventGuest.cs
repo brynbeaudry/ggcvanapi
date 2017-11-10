@@ -10,7 +10,7 @@ namespace ggcvan.Models
     {
         public int EventId { get; set; }
         public Event Event { get; set; }
-        public string ApplicationUserId { get; set; }
+        public string GuestId { get; set; }
         public ApplicationUser Guest { get; set; }
 
     }

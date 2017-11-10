@@ -40,10 +40,10 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
+                <img src="@Html.DisplayFor(modelItem => item.ImageUrl)" alt="Alternate Text" />
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Url)
+                <a href="@Html.DisplayNameFor(model => model.Url)">Learn More!</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NumberOfPlayers)

@@ -13,7 +13,7 @@ namespace ggcvan.Data
     {
         public DbSet<Event> Events { get; set; }
         public DbSet<EventGuest> EventGuests { get; set; }
- 
+        public DbSet<ApplicationUser> ApplicationUser { get; set; }
         public DbSet<Game> Games { get; set; }
         //  public DbSet<GameRank> GameRanks { get; set; }
         //public DbSet<Leaderboard> Leaderboards { get; set; }
@@ -46,7 +46,7 @@ namespace ggcvan.Data
                 .HasForeignKey("EventCreator");
 
             builder.Entity<EventGuest>()
-            .HasKey(eg => new { eg.ApplicationUserId, eg.EventId });
+            .HasKey(eg => new { eg.GuestId, eg.EventId });
             builder.Entity<EventGuest>()
                 .HasOne(eg => eg.Event)
                 .WithMany(e => e.EventGuests)
@@ -54,12 +54,10 @@ namespace ggcvan.Data
             builder.Entity<EventGuest>()
                 .HasOne(eg => eg.Guest)
                 .WithMany(a => a.JoinedEvents)
-                .HasForeignKey(eg => eg.ApplicationUserId);
+                .HasForeignKey(eg => eg.GuestId);
 
 
         }
-
-        public DbSet<ggcvan.Models.ApplicationUser> ApplicationUser { get; set; }
 
     }
 }

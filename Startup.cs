@@ -65,7 +65,7 @@ namespace ggcvan
                 //routes.MapRoute()
             });
 
-            //DummyData.Initialize(ctx);
+            DummyData.Initialize(ctx);
         }
     }
 }

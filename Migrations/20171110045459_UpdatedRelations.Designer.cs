@@ -11,9 +11,10 @@ using System;
 namespace ggcvan.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171110045459_UpdatedRelations")]
+    partial class UpdatedRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,7 +93,7 @@ namespace ggcvan.Migrations
 
                     b.Property<int>("EventGame");
 
-                    b.Property<int>("GameId");
+                    b.Property<int?>("GameId");
 
                     b.Property<string>("Host");
 
@@ -117,11 +118,11 @@ namespace ggcvan.Migrations
 
             modelBuilder.Entity("ggcvan.Models.EventGuest", b =>
                 {
-                    b.Property<string>("GuestId");
+                    b.Property<string>("ApplicationUserId");
 
                     b.Property<int>("EventId");
 
-                    b.HasKey("GuestId", "EventId");
+                    b.HasKey("ApplicationUserId", "EventId");
 
                     b.HasIndex("EventId");
 
@@ -264,20 +265,19 @@ namespace ggcvan.Migrations
 
                     b.HasOne("ggcvan.Models.Game", "Game")
                         .WithMany()
-                        .HasForeignKey("GameId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("GameId");
                 });
 
             modelBuilder.Entity("ggcvan.Models.EventGuest", b =>
                 {
+                    b.HasOne("ggcvan.Models.ApplicationUser", "Guest")
+                        .WithMany("JoinedEvents")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("ggcvan.Models.Event", "Event")
                         .WithMany("EventGuests")
                         .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("ggcvan.Models.ApplicationUser", "Guest")
-                        .WithMany("JoinedEvents")
-                        .HasForeignKey("GuestId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

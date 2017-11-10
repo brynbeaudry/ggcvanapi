@@ -63,8 +63,8 @@ namespace ggcvan.Data
             {
                 db.EventGuests.Add(new EventGuest
                 {
-                   ApplicationUserId = db.Users.FirstOrDefault(u => u.Email == "test@user.com").Id,
-                   EventId = db.Events.FirstOrDefault(e=> e.Creator.Email == "test@user.com").Id
+                   Guest = db.Users.FirstOrDefault(u => u.Email == "test@user.com"),
+                   Event = db.Events.FirstOrDefault(e=> e.Creator.Email == "test@user.com")
                 });
             }
             db.SaveChanges();
