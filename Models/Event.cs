@@ -8,8 +8,13 @@ namespace ggcvan.Models
     public class Event
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public ApplicationUser CreatedBy { get; set; }
+        public string Title { get; set; }
+
+        public int ApplicationUserId { get; set; }
+
+        public ApplicationUser Creator { get; set; }
 
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
@@ -27,12 +32,9 @@ namespace ggcvan.Models
 
         public string Description { get; set; }
         public string Host { get; set; }
-
         public string LocationDescription { get; set; }
 
-
-
-        public ICollection<ApplicationUser> ApplicationUsers { get; set;}
+        public List<EventGuest> EventGuests { get; set;}
 
     }
 }

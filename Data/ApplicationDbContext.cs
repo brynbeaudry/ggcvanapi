@@ -11,7 +11,9 @@ namespace ggcvan.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-        //public DbSet<Event> Events { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<EventGuest> EventGuests { get; set; }
+ 
         //public DbSet<Game> Games { get; set; }
         //public DbSet<GameRank> GameRanks { get; set; }
         //public DbSet<Leaderboard> Leaderboards { get; set; }
@@ -27,6 +29,26 @@ namespace ggcvan.Data
             // Customize the ASP.NET Identity model and override the defaults if needed.
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
+
+            //Relations
+
+            builder.Entity<Event>()
+            .Property<int>("EventCreatorFK");
+            builder.Entity<Event>()
+                .HasOne(e => e.Creator)
+                .WithMany(e => e.CreatedEvents)
+                .HasForeignKey("CreatorForeignKey");
+
+            builder.Entity<EventGuest>()
+            .HasKey(eg => new { eg.ApplicationUserId, eg.EventId });
+            builder.Entity<EventGuest>()
+                .HasOne(eg => eg.Event)
+                .WithMany(e => e.EventGuests)
+                .HasForeignKey(eg => eg.EventId);
+            builder.Entity<EventGuest>()
+                .HasOne(eg => eg.Guest)
+                .WithMany(a => a.JoinedEvents)
+                .HasForeignKey(eg => eg.ApplicationUserId);
         }
 
     }

@@ -16,5 +16,9 @@ namespace ggcvan.Models
 
         public String Bio {get; set;}
 
+        public List<Event> CreatedEvents { get; set; }
+
+        public List<EventGuest> JoinedEvents { get; set; }
+
     }
 }
