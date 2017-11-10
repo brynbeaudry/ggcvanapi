@@ -37,7 +37,11 @@ namespace ggcvan.Controllers.api
                 return BadRequest(ModelState);
             }
 
-            var @event = await _context.Events.SingleOrDefaultAsync(m => m.Id == id);
+            var @event = await _context.Events
+                .Include(m => m.Game)
+                .Include(m => m.EventGuests)
+                    .ThenInclude(eg => eg.Guest)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (@event == null)
             {
