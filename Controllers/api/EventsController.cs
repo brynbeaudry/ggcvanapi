@@ -47,6 +47,15 @@ namespace ggcvan.Controllers.api
             {
                 return NotFound();
             }
+            /*
+            @event.Creator.ShouldSerializeBio(false);
+            foreach (var ev in @event.EventGuests)
+            {
+                ev.Guest.ShouldSerializeCreatedEvents(false);
+                ev.Guest.ShouldSerializeJoinedEvents(false);
+                ev.Guest.ShouldSerializeBio(true);
+            }
+            */
 
             return Ok(@event);
         }

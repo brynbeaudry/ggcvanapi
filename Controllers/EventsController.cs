@@ -38,12 +38,6 @@ namespace ggcvan.Controllers
                 .Include(m => m.EventGuests)
                     .ThenInclude(eg=> eg.Guest)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            //var @eventguests = await _context.Users.Where(u=> { })
-
-            if (@event == null)
-            {
-                return NotFound();
-            }
 
             return View(@event);
         }
