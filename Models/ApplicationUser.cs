@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ggcvan.Models
 {
@@ -44,6 +45,19 @@ namespace ggcvan.Models
         [JsonIgnore]
         public override int AccessFailedCount { get; set; }
 
+        [JsonIgnore]
+        [ScaffoldColumn(false)]
+        [NotMapped]
+        public bool SerializeJE { get; set; }
+        [JsonIgnore]
+        [ScaffoldColumn(false)]
+        [NotMapped]
+        public bool SerializeCE { get; set; }
+        [JsonIgnore]
+        [ScaffoldColumn(false)]
+        [NotMapped]
+        public bool SerializeBio { get; set; }
+
         //[JsonIgnore]
         public String Bio {get; set;}
 
@@ -51,17 +65,19 @@ namespace ggcvan.Models
 
         public List<EventGuest> JoinedEvents { get; set; }
 
-        public bool ShouldSerializeJoinedEvents(bool t)
+        public bool ShouldSerializeJoinedEvents()
         {
-            return t; //maybe a more meaningful logic
+            return SerializeJE;        
         }
-        public bool ShouldSerializeCreatedEvents(bool t)
+
+        public bool ShouldSerializeCreatedEvents()
         {
-            return t; //maybe a more meaningful logic
+            return SerializeCE;
         }
-        public bool ShouldSerializeBio(bool t)
+
+        public bool ShouldSerializeBio()
         {
-            return t; //maybe a more meaningful logic
+            return SerializeBio;
         }
 
     }

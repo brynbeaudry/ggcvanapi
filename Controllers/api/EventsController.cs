@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ggcvan.Data;
 using ggcvan.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ggcvan.Controllers.api
 {
@@ -47,15 +49,17 @@ namespace ggcvan.Controllers.api
             {
                 return NotFound();
             }
-            /*
-            @event.Creator.ShouldSerializeBio(false);
+
+            @event.Creator.SerializeBio=false;
+            @event.Creator.SerializeJE=false;
+            @event.Creator.SerializeCE=false;
             foreach (var ev in @event.EventGuests)
             {
-                ev.Guest.ShouldSerializeCreatedEvents(false);
-                ev.Guest.ShouldSerializeJoinedEvents(false);
-                ev.Guest.ShouldSerializeBio(true);
+                @event.Creator.SerializeBio = true;
+                @event.Creator.SerializeJE = false;
+                @event.Creator.SerializeCE = false;
             }
-            */
+            //var @eventJson = new JObject(@event);
 
             return Ok(@event);
         }
