@@ -13,6 +13,10 @@ using Microsoft.Extensions.Options;
 using ggcvan.Models;
 using ggcvan.Models.AccountViewModels;
 using ggcvan.Services;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace ggcvan.Controllers
 {
@@ -24,17 +28,20 @@ namespace ggcvan.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly IConfiguration _config;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger,
+            IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _config = configuration;
         }
 
         [TempData]
@@ -49,6 +56,45 @@ namespace ggcvan.Controllers
 
             ViewData["ReturnUrl"] = returnUrl;
             return View();
+        }
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("/token")]
+
+        public async Task<IActionResult> GenerateToken([FromBody] LoginViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                if (user != null)
+                {
+                    var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
+                    if (result.Succeeded)
+                    {
+
+                        var claims = new[]
+                        {
+          new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+          new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+        };
+
+                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
+                        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                        var token = new JwtSecurityToken(_config["Tokens:Issuer"],
+                          _config["Tokens:Issuer"],
+                          claims,
+                          expires: DateTime.Now.AddMinutes(30),
+                          signingCredentials: creds);
+
+                        return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
+                    }
+                }
+            }
+
+            return BadRequest("Could not create token");
         }
 
         [HttpPost]

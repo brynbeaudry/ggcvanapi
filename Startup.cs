@@ -13,6 +13,8 @@ using ggcvan.Models;
 using ggcvan.Services;
 using Newtonsoft.Json.Linq;
 using Swashbuckle.AspNetCore.Swagger;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace ggcvan
 {
@@ -37,7 +39,9 @@ namespace ggcvan
              .AddEntityFrameworkStores<ApplicationDbContext>()
              .AddDefaultTokenProviders();
 
-           
+            services.AddSingleton<IConfiguration>(Configuration);
+
+
 
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
@@ -52,7 +56,21 @@ namespace ggcvan
                 var FacebookConfig = Configuration.GetSection("ExternalIdentities").GetSection("Facebook");
                 facebookOptions.AppId = FacebookConfig["app_id"];
                 facebookOptions.AppSecret = FacebookConfig["app_secret"];
-            });
+            })
+            .AddCookie(cfg => cfg.SlidingExpiration = true)
+            .AddJwtBearer(cfg =>
+              {
+                  cfg.RequireHttpsMetadata = false;
+                  cfg.SaveToken = true;
+
+                  cfg.TokenValidationParameters = new TokenValidationParameters()
+                  {
+                      ValidIssuer = Configuration["Tokens:Issuer"],
+                      ValidAudience = Configuration["Tokens:Issuer"],
+                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
+                  };
+
+              });
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();

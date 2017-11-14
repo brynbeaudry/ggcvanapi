@@ -9,11 +9,14 @@ using ggcvan.Data;
 using ggcvan.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ggcvan.Controllers.api
 {
     [Produces("application/json")]
     [Route("api/Events")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
