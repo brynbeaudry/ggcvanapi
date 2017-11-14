@@ -24,6 +24,7 @@
       "ggcvan/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.All": "2.0.0",
+          "Microsoft.AspNetCore.Authentication.Google": "2.0.0",
           "Microsoft.EntityFrameworkCore": "2.0.0",
           "Microsoft.EntityFrameworkCore.Design": "2.0.0",
           "Microsoft.EntityFrameworkCore.Tools": "2.0.0",

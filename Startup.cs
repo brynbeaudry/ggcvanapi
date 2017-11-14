@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using ggcvan.Data;
 using ggcvan.Models;
 using ggcvan.Services;
+using Newtonsoft.Json.Linq;
 
 namespace ggcvan
 {
@@ -32,8 +33,20 @@ namespace ggcvan
                 options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+             .AddEntityFrameworkStores<ApplicationDbContext>()
+             .AddDefaultTokenProviders();
+
+           
+
+            services.AddAuthentication().AddGoogle(googleOptions =>
+            {
+                var GoogleConfig = Configuration.GetSection("ExternalIdentities").GetSection("Google");
+                Console.WriteLine(GoogleConfig["client_id"]);
+
+
+                googleOptions.ClientId = GoogleConfig["client_id"];
+                googleOptions.ClientSecret = GoogleConfig["client_secret"];
+            });
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();
