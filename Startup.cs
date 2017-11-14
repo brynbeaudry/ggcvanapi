@@ -41,11 +41,16 @@ namespace ggcvan
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
                 var GoogleConfig = Configuration.GetSection("ExternalIdentities").GetSection("Google");
-                Console.WriteLine(GoogleConfig["client_id"]);
+                //Console.WriteLine(GoogleConfig["client_id"]);
 
 
                 googleOptions.ClientId = GoogleConfig["client_id"];
                 googleOptions.ClientSecret = GoogleConfig["client_secret"];
+            }).AddFacebook(facebookOptions =>
+            {
+                var FacebookConfig = Configuration.GetSection("ExternalIdentities").GetSection("Facebook");
+                facebookOptions.AppId = FacebookConfig["app_id"];
+                facebookOptions.AppSecret = FacebookConfig["app_secret"];
             });
 
             // Add application services.
