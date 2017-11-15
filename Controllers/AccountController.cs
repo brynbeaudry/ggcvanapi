@@ -17,6 +17,8 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace ggcvan.Controllers
 {
@@ -58,9 +60,45 @@ namespace ggcvan.Controllers
             return View();
         }
 
+        /*
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("api/authentication/FacebookLogin")]
+        //will have o make Facebook account object 
+        public async Task<IActionResult> FacebookLogin([FromBody] FacebookToken facebookToken)
+        {
+            //check token
+            var httpClient = new HttpClient { BaseAddress = new Uri("") };
+            var response = await httpClient.GetAsync($"me?access_token={facebookToken.Token}&fields=id,name,email,first_name,last_name,age_range,birthday,gender,locale,picture");
+            if (!response.IsSuccessStatusCode) return BadRequest();
+            var result = await response.Content.ReadAsStringAsync();
+            //will have to make facebook account
+           // var facebookAccount = JsonConvert.DeserializeObject<FacebookAccount>(result);
+
+            //register if required
+            //may need to make facebook users DB set
+            /*
+            var facebookUser = _userManager.FindByLoginAsync("Facebook", );
+            if (facebookUser == null)
+            {
+                var user = new ApplicationUser { UserName = facebookAccount.Name, Email = facebookAccount.Email };
+                var result2 = await _userManager.CreateAsync(user);
+                if (!result2.Succeeded) return BadRequest();
+                facebookUser = new FacebookUser { Id = facebookAccount.Id, UserId = user.Id };
+                _context.FacebookUsers.Add(facebookUser);
+                _context.SaveChanges();
+            }
+
+            //send bearer token
+            return Ok(GetToken(facebookUser.UserId));
+            }
+          
+    */
+
+
         [AllowAnonymous]
         [HttpPost]
-        [Route("/token")]
+        [Route("/email-token")]
 
         public async Task<IActionResult> GenerateToken([FromBody] LoginViewModel model)
         {
