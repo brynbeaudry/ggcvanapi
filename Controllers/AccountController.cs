@@ -342,7 +342,7 @@ namespace ggcvan.Controllers
             // Request a redirect to the external login provider.
             var redirectUrl = Url.Action(nameof(ExternalLoginCallback), "Account", new { returnUrl });
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-            return Challenge(properties, provider);
+            return Challenge(properties, provider);//google
         }
 
         [HttpGet]
@@ -355,6 +355,9 @@ namespace ggcvan.Controllers
                 return RedirectToAction(nameof(Login));
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
+            //_signInManager.GetExternalLoginInfoAsync()
+            // _userManager.CreateAsync
+            //userManager.CreateSecurityTokenAsync(
             if (info == null)
             {
                 return RedirectToAction(nameof(Login));
@@ -390,6 +393,10 @@ namespace ggcvan.Controllers
             {
                 // Get the information about the user from the external login provider
                 var info = await _signInManager.GetExternalLoginInfoAsync();
+                //ExternalLoginInfo info = new ExternalLoginInfo();
+
+                //ClaimsPrincipal cp = new ClaimsPrincipal()
+               // _signInManager.
                 if (info == null)
                 {
                     throw new ApplicationException("Error loading external login information during confirmation.");
