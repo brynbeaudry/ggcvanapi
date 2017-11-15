@@ -93,47 +93,29 @@ namespace ggcvan.Controllers
             return Ok(GetToken(facebookUser.UserId));
             }
           
-    */
-
+    */  
 
         [AllowAnonymous]
-        [HttpPost]
-        [Route("/email-token")]
-
-        public async Task<IActionResult> GenerateToken([FromBody] LoginViewModel model)
+        [HttpPost("/api/register")]
+        public IActionResult ApiRegister([FromBody]LoginViewModel lmv)
         {
-            if (ModelState.IsValid)
+            try 
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-
-                if (user != null)
-                {
-                    var result = await _signInManager.CheckPasswordSignInAsync(user, model.Password, false);
-                    if (result.Succeeded)
-                    {
-
-                        var claims = new[]
-                        {
-          new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-          new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        };
-
-                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
-                        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                        var token = new JwtSecurityToken(_config["Tokens:Issuer"],
-                          _config["Tokens:Issuer"],
-                          claims,
-                          expires: DateTime.Now.AddMinutes(30),
-                          signingCredentials: creds);
-
-                        return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(token) });
-                    }
+                // save 
+                var identityResult = _userManager.CreateAsync(new ApplicationUser(){ Email = lmv.Email, UserName = lmv.Email}, lmv.Password);
+                if(identityResult.IsFaulted){
+                    throw new Exception("Your request is faulted.");
                 }
+            } 
+            catch(Exception ex)
+            {
+                // return error message if there was an exception
+                return BadRequest(ex.Message);
             }
-
-            return BadRequest("Could not create token");
+            return Ok(Json("User Created successfully."));
         }
+
+        
 
         [HttpPost]
         [AllowAnonymous]

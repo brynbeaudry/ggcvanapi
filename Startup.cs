@@ -40,7 +40,16 @@ namespace ggcvan
                 }
             );
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>((options =>
+                {
+                    // Password settings
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 4; 
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequiredUniqueChars = 2;
+                }))
              .AddEntityFrameworkStores<ApplicationDbContext>()
              .AddDefaultTokenProviders();
 
@@ -51,7 +60,7 @@ namespace ggcvan
             {
                 options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
                 options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
-                options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
+                //options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
             });
 
             
@@ -111,7 +120,7 @@ namespace ggcvan
                 // can enable the other flows if you need to support implicit or client credentials.
                 options.AllowAuthorizationCodeFlow()
                        .AllowPasswordFlow()
-                       .AllowImplicitFlow()
+                       //.AllowImplicitFlow()
                        .AllowRefreshTokenFlow();
 
                 // Mark the "profile" scope as a supported scope in the discovery document.
