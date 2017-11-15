@@ -146,6 +146,15 @@ namespace ggcvan
                 // options.AddEphemeralSigningKey();
             });
 
+             var policy = new Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicy();
+ 
+                policy.Headers.Add("*");
+                policy.Methods.Add("*");
+                policy.Origins.Add("*");
+                policy.SupportsCredentials = true;
+            
+            services.AddCors(x => x.AddPolicy("corsGlobalPolicy", policy));
+
             services.AddMvc()
             .AddJsonOptions(
                 options => {
@@ -177,7 +186,10 @@ namespace ggcvan
 
             app.UseStaticFiles();
 
+            app.UseCors("corsGlobalPolicy");
+
             app.UseAuthentication();
+
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
