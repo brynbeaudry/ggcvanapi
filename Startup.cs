@@ -121,7 +121,12 @@ namespace ggcvan
                 options.AllowAuthorizationCodeFlow()
                        .AllowPasswordFlow()
                        //.AllowImplicitFlow()
-                       .AllowRefreshTokenFlow();
+                       .AllowRefreshTokenFlow()
+                       //warning!!!!!! configure allowed audiences or clients
+                       .AllowCustomFlow("urn:ietf:params:oauth:grant-type:google_identity_token")
+                       .AllowCustomFlow("urn:ietf:params:oauth:grant-type:facebook_access_token");
+
+
 
                 // Mark the "profile" scope as a supported scope in the discovery document.
                 options.RegisterScopes(OpenIdConnectConstants.Scopes.Profile);
