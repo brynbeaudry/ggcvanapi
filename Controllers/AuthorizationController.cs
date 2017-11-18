@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Extensions;
@@ -14,6 +16,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OpenIddict.Core;
 
@@ -25,6 +28,8 @@ public class AuthorizationController : Controller
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly IConfiguration _config;
+        private const string GoogleApiTokenInfoUrl = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={0}";
+        
 
         public AuthorizationController(
             UserManager<ApplicationUser> userManager,
@@ -39,6 +44,49 @@ public class AuthorizationController : Controller
             _logger = logger;
             _config = configuration;
         }
+
+    public async Task<ProviderUserDetails> GetGoogleDetailsAsync(string providerToken)
+    {
+        var httpClient = new HttpClient();
+        var requestUri = new Uri(string.Format(GoogleApiTokenInfoUrl, providerToken));
+        
+        HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
+        try
+        {
+            httpResponseMessage = await httpClient.GetAsync(requestUri);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+
+        if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
+        {
+            //Console.WriteLine(ex.Message);
+            return null;
+        }
+
+        var response = httpResponseMessage.Content.ReadAsStringAsync().Result;
+        var googleApiTokenInfo = JsonConvert.DeserializeObject<GoogleApiTokenInfo>(response);
+
+        /* if (!SupportedClientsIds.Contains(googleApiTokenInfo.aud))
+        {
+            Log.WarnFormat("Google API Token Info aud field ({0}) not containing the required client id", googleApiTokenInfo.aud);
+            return null;
+        } */
+
+        return new ProviderUserDetails
+        {
+            Email = googleApiTokenInfo.email,
+            FirstName = googleApiTokenInfo.given_name,
+            LastName = googleApiTokenInfo.family_name,
+            Locale = googleApiTokenInfo.locale,
+            Name = googleApiTokenInfo.name,
+            ProviderUserId = googleApiTokenInfo.sub
+        };
+    }
+    
     [HttpPost("/connect/token"), Produces("application/json")]
     public async Task<IActionResult> ExchangeAsync(OpenIdConnectRequest request)
     {
@@ -152,8 +200,8 @@ public class AuthorizationController : Controller
                 // Retrieve the user profile corresponding to the authorization code.
                 // Note: if you want to automatically invalidate the authorization code
                 // when the user password/roles change, use the following line instead:
-                var user = await _signInManager.ValidateSecurityStampAsync(info.Principal);
-                // var user = await _userManager.GetUserAsync(info.Principal);
+                //var user = await _signInManager.ValidateSecurityStampAsync(info.Principal);
+                var user = await _userManager.GetUserAsync(info.Principal);
 
                 if (user == null)
                 {
@@ -179,7 +227,7 @@ public class AuthorizationController : Controller
                 var ticket = await CreateTicketAsync(request, user, info.Properties);
 
                 return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
-            }
+            }   
 
             if (request.IsRefreshTokenGrantType())
             {
@@ -219,7 +267,7 @@ public class AuthorizationController : Controller
                 return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
             }
 
-        else if (request.GrantType == "urn:ietf:params:oauth:grant-type:google_identity_token")
+        if (request.GrantType == "urn:ietf:params:oauth:grant-type:google_identity_token")
         {
         // Reject the request if the "assertion" parameter is missing.
         if (string.IsNullOrEmpty(request.Assertion))
@@ -231,19 +279,45 @@ public class AuthorizationController : Controller
             });
         }
 
+
         // Create a new ClaimsIdentity containing the claims that
         // will be used to create an id_token and/or an access token.
         var identity = new ClaimsIdentity(OpenIdConnectServerDefaults.AuthenticationScheme);
+        Console.WriteLine(identity.ToString());
+        Console.WriteLine(request.Code);
+
+        var googleDetails = await GetGoogleDetailsAsync(request.Assertion);
 
         // Manually validate the identity token issued by Google,
         // including the issuer, the signature and the audience.
         // Then, copy the claims you need to the "identity" instance.
+        identity.AddClaim(OpenIdConnectConstants.Claims.Subject,
+                googleDetails.ProviderUserId,
+                OpenIdConnectConstants.Destinations.AccessToken);
+        identity.AddClaim(OpenIdConnectConstants.Claims.Name, googleDetails.Name,
+                OpenIdConnectConstants.Destinations.AccessToken);
+        identity.AddClaim(OpenIdConnectConstants.Claims.Email, 
+            googleDetails.Email, 
+                OpenIdConnectConstants.Destinations.AccessToken);
+        identity.AddClaim(OpenIdConnectConstants.Claims.GivenName, 
+            googleDetails.FirstName, 
+                OpenIdConnectConstants.Destinations.AccessToken);
+        identity.AddClaim(OpenIdConnectConstants.Claims.FamilyName, 
+            googleDetails.LastName, 
+                OpenIdConnectConstants.Destinations.AccessToken);
+        identity.AddClaim(OpenIdConnectConstants.Claims.Locale, 
+            googleDetails.Locale, 
+                OpenIdConnectConstants.Destinations.AccessToken);
 
         // Create a new authentication ticket holding the user identity.
+        
+
         var ticket = new AuthenticationTicket(
             new ClaimsPrincipal(identity),
             new AuthenticationProperties(),
             OpenIdConnectServerDefaults.AuthenticationScheme);
+
+        // Then, copy the claims you need to the "identity" instance.
 
         ticket.SetScopes(
             OpenIdConnectConstants.Scopes.OpenId,
@@ -251,8 +325,8 @@ public class AuthorizationController : Controller
 
         return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
     }
-
-   else if (request.GrantType == "urn:ietf:params:oauth:grant-type:urn:ietf:params:oauth:grant-type:facebook_access_token")
+    
+    if (request.GrantType == "urn:ietf:params:oauth:grant-type:urn:ietf:params:oauth:grant-type:facebook_access_token")
     {
         // Reject the request if the "assertion" parameter is missing.
         if (string.IsNullOrEmpty(request.Assertion))
@@ -271,6 +345,7 @@ public class AuthorizationController : Controller
         // Manually validate the identity token issued by Google,
         // including the issuer, the signature and the audience.
         // Then, copy the claims you need to the "identity" instance.
+
 
         // Create a new authentication ticket holding the user identity.
         var ticket = new AuthenticationTicket(

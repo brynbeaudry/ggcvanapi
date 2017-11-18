@@ -11,6 +11,7 @@ namespace ggcvan.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        //public DBSet<OpenIdDictApplications> OpenIdDictApplications { get;set;}
         public DbSet<Event> Events { get; set; }
         public DbSet<EventGuest> EventGuests { get; set; }
         public DbSet<ApplicationUser> ApplicationUser { get; set; }

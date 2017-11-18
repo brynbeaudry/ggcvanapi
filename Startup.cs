@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AspNet.Security.OpenIdConnect.Primitives;
 
+
 namespace ggcvan
 {
     public class Startup
@@ -38,6 +39,7 @@ namespace ggcvan
                     options.UseMySql(Configuration.GetConnectionString("DefaultConnection"));
                     options.UseOpenIddict();
                 }
+                
             );
 
             services.AddIdentity<ApplicationUser, IdentityRole>((options =>
@@ -131,6 +133,8 @@ namespace ggcvan
                 // Mark the "profile" scope as a supported scope in the discovery document.
                 options.RegisterScopes(OpenIdConnectConstants.Scopes.Profile);
 
+                
+
                 // Make the "client_id" parameter mandatory when sending a token request.
                 //options.RequireClientIdentification();
 
@@ -214,6 +218,33 @@ namespace ggcvan
             });
 
             DummyData.Initialize(ctx);
+            // Seed the database with the sample applications.
+            // Note: in a real world application, this step should be part of a setup script.
+            //InitializeAsync(app.ApplicationServices, CancellationToken.None).GetAwaiter().GetResult();
+            // Create a new service scope to ensure the database context is correctly disposed when this methods returns.
+            /* 
+            using (var scope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                await context.Database.EnsureCreatedAsync();
+
+                // Note: when using a custom entity or a custom key type, replace OpenIddictApplication by the appropriate type.
+                var manager = scope.ServiceProvider.GetRequiredService<OpenIddictApplicationManager<OpenIddictApplication>>();
+
+                if (await manager.FindByClientIdAsync("[client identifier]", cancellationToken) == null)
+                {
+                    var descriptor = new OpenIddictApplicationDescriptor
+                    {
+                        ClientId = "986909663782-4t3ei95jktci3e0mhjv95k02de6vcg3u.apps.googleusercontent.com",
+                        ClientSecret = "[client secret]",
+                        RedirectUris = { new Uri( 
+                        DisplayName) }
+                    };
+
+                    await manager.CreateAsync(descriptor, cancellationToken);
+                }
+            }
+            */
         }
     }
 }
