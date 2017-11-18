@@ -218,6 +218,8 @@ namespace ggcvan
             });
 
             DummyData.Initialize(ctx);
+
+
             // Seed the database with the sample applications.
             // Note: in a real world application, this step should be part of a setup script.
             //InitializeAsync(app.ApplicationServices, CancellationToken.None).GetAwaiter().GetResult();

@@ -17,7 +17,7 @@ namespace ggcvan.Controllers.api
     [Produces("application/json")]
     [Route("api/Events")]
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [Authorize]
+    //[Authorize]
     public class EventsController : Controller
     {
         private readonly ApplicationDbContext _context;
