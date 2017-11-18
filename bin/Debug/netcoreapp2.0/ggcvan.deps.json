@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "114c6096a77730adb726eaeb5f2739b5f72dd71d"
+    "signature": "de326b1725975424dcbdd5224517a2d31b0e3536"
   },
   "compilationOptions": {
     "defines": [
@@ -35,9 +35,9 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "2.0.0",
           "MySql.Data": "7.0.7-m61",
           "MySql.Data.EntityFrameworkCore": "7.0.7-m61",
-          "OpenIddict": "2.0.0-rc1-final",
-          "OpenIddict.EntityFrameworkCore": "2.0.0-rc1-final",
-          "OpenIddict.Mvc": "2.0.0-rc1-final",
+          "OpenIddict": "2.0.0-rc2-0772",
+          "OpenIddict.EntityFrameworkCore": "2.0.0-rc2-0772",
+          "OpenIddict.Mvc": "2.0.0-rc2-0772",
           "Pomelo.EntityFrameworkCore.MySql": "2.0.0",
           "Swashbuckle.AspNetCore": "1.0.0"
         },
@@ -2656,13 +2656,13 @@
           "lib/netstandard1.3/NuGet.Frameworks.dll": {}
         }
       },
-      "OpenIddict/2.0.0-rc1-final": {
+      "OpenIddict/2.0.0-rc2-0772": {
         "dependencies": {
           "AspNet.Security.OpenIdConnect.Server": "2.0.0-rc1-final",
           "Microsoft.AspNetCore.Diagnostics.Abstractions": "2.0.1",
           "Microsoft.Extensions.Caching.Abstractions": "2.0.0",
           "Newtonsoft.Json.Bson": "1.0.1",
-          "OpenIddict.Core": "2.0.0-rc1-final"
+          "OpenIddict.Core": "2.0.0-rc2-0772"
         },
         "runtime": {
           "lib/netstandard2.0/OpenIddict.dll": {}
@@ -2671,13 +2671,13 @@
           "lib/netstandard2.0/OpenIddict.dll": {}
         }
       },
-      "OpenIddict.Core/2.0.0-rc1-final": {
+      "OpenIddict.Core/2.0.0-rc2-0772": {
         "dependencies": {
           "CryptoHelper": "3.0.0",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "2.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "2.0.0",
           "Microsoft.Extensions.Options": "2.0.0",
-          "OpenIddict.Models": "2.0.0-rc1-final",
+          "OpenIddict.Models": "2.0.0-rc2-0772",
           "System.Collections.Immutable": "1.4.0"
         },
         "runtime": {
@@ -2687,10 +2687,10 @@
           "lib/netstandard2.0/OpenIddict.Core.dll": {}
         }
       },
-      "OpenIddict.EntityFrameworkCore/2.0.0-rc1-final": {
+      "OpenIddict.EntityFrameworkCore/2.0.0-rc2-0772": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore.Relational": "2.0.1",
-          "OpenIddict.Core": "2.0.0-rc1-final"
+          "OpenIddict.Core": "2.0.0-rc2-0772"
         },
         "runtime": {
           "lib/netstandard2.0/OpenIddict.EntityFrameworkCore.dll": {}
@@ -2699,7 +2699,7 @@
           "lib/netstandard2.0/OpenIddict.EntityFrameworkCore.dll": {}
         }
       },
-      "OpenIddict.Models/2.0.0-rc1-final": {
+      "OpenIddict.Models/2.0.0-rc2-0772": {
         "runtime": {
           "lib/netstandard2.0/OpenIddict.Models.dll": {}
         },
@@ -2707,11 +2707,11 @@
           "lib/netstandard2.0/OpenIddict.Models.dll": {}
         }
       },
-      "OpenIddict.Mvc/2.0.0-rc1-final": {
+      "OpenIddict.Mvc/2.0.0-rc2-0772": {
         "dependencies": {
           "AspNet.Security.OpenIdConnect.Server": "2.0.0-rc1-final",
           "Microsoft.AspNetCore.Mvc.Core": "2.0.1",
-          "OpenIddict.Core": "2.0.0-rc1-final"
+          "OpenIddict.Core": "2.0.0-rc2-0772"
         },
         "runtime": {
           "lib/netstandard2.0/OpenIddict.Mvc.dll": {}
@@ -6004,40 +6004,40 @@
       "path": "nuget.frameworks/4.0.0",
       "hashPath": "nuget.frameworks.4.0.0.nupkg.sha512"
     },
-    "OpenIddict/2.0.0-rc1-final": {
+    "OpenIddict/2.0.0-rc2-0772": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-QJz5cZjX+5RTuhg/8NemJUT9hAgMbsxBuk/SbKArgiORP216uOEYtP3Jm04gFZnSNLmQMdHi1GbyR/zAk+NSUQ==",
-      "path": "openiddict/2.0.0-rc1-final",
-      "hashPath": "openiddict.2.0.0-rc1-final.nupkg.sha512"
+      "sha512": "sha512-eks/p3IhL7hu3bht1Wd026qRSgap+9cAQlvTDQ8FzHyVb3p56y3x+bCv78qqlF9D6KQutxhbMOvbOxOJqUux/w==",
+      "path": "openiddict/2.0.0-rc2-0772",
+      "hashPath": "openiddict.2.0.0-rc2-0772.nupkg.sha512"
     },
-    "OpenIddict.Core/2.0.0-rc1-final": {
+    "OpenIddict.Core/2.0.0-rc2-0772": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-g56NMurkmFRNJp+HEOTN/02X+wMWkTLM6nPLmrcz2pNE5ucLfLPeWJvZ4thk/OQYmpgYrW8wLAIvA99+9RI7XA==",
-      "path": "openiddict.core/2.0.0-rc1-final",
-      "hashPath": "openiddict.core.2.0.0-rc1-final.nupkg.sha512"
+      "sha512": "sha512-LQvCwexINY2vPt4oJvaD9Dz9ZZE6NBBVVp5dKIg2TAzG13xhkXRfV2GxDlu9KB7t6jA0M1T6nma71HWzpS5S1g==",
+      "path": "openiddict.core/2.0.0-rc2-0772",
+      "hashPath": "openiddict.core.2.0.0-rc2-0772.nupkg.sha512"
     },
-    "OpenIddict.EntityFrameworkCore/2.0.0-rc1-final": {
+    "OpenIddict.EntityFrameworkCore/2.0.0-rc2-0772": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-hCwe33dOZaM9yJf6XdsE2qZISUSfWsLSSELLDMHbqxJH8PSGoioKnBNk0g29ra05lCfJrDLLA7lU29HJOMdFxg==",
-      "path": "openiddict.entityframeworkcore/2.0.0-rc1-final",
-      "hashPath": "openiddict.entityframeworkcore.2.0.0-rc1-final.nupkg.sha512"
+      "sha512": "sha512-KtODqXrH08icura1vE/zHHI4RqhVaffeij79tymAX0QrHTdC+jYLncfno+RVO/0+i7my7WgKU4Tlvrcvo+FSTg==",
+      "path": "openiddict.entityframeworkcore/2.0.0-rc2-0772",
+      "hashPath": "openiddict.entityframeworkcore.2.0.0-rc2-0772.nupkg.sha512"
     },
-    "OpenIddict.Models/2.0.0-rc1-final": {
+    "OpenIddict.Models/2.0.0-rc2-0772": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-fwI93juY5X84AKjiUbBjPRbBg5CVc14sjlokBMuRpEbzZO+LCdVyk0dgRg4zCcHxb25BBZnYV5ApUZ78chDEgg==",
-      "path": "openiddict.models/2.0.0-rc1-final",
-      "hashPath": "openiddict.models.2.0.0-rc1-final.nupkg.sha512"
+      "sha512": "sha512-WAnSBST3qRbw6j3qi7BswTNbb0ZfUcXe+xZAxH+DHvDZ10Rc/t9JAd60g8dJ+wHyNA4QsqysjphdcV7hKnpcIg==",
+      "path": "openiddict.models/2.0.0-rc2-0772",
+      "hashPath": "openiddict.models.2.0.0-rc2-0772.nupkg.sha512"
     },
-    "OpenIddict.Mvc/2.0.0-rc1-final": {
+    "OpenIddict.Mvc/2.0.0-rc2-0772": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-J1K4pBR143Qqinu8htyzccxoa8PG03K2IOU/W0my1Op181PK/tXgSl11IoUSnZCyghqbO3Ch54hIh76jZw9YiA==",
-      "path": "openiddict.mvc/2.0.0-rc1-final",
-      "hashPath": "openiddict.mvc.2.0.0-rc1-final.nupkg.sha512"
+      "sha512": "sha512-cVw0UFtutr5P9K5Ot0BL8HCm4p93KL59MdvHg6PUius+r2p2Vm3yyEMyvIEEDAFXBqgUO+2gZ0jJM2CvLGiziQ==",
+      "path": "openiddict.mvc/2.0.0-rc2-0772",
+      "hashPath": "openiddict.mvc.2.0.0-rc2-0772.nupkg.sha512"
     },
     "Pomelo.EntityFrameworkCore.MySql/2.0.0": {
       "type": "package",

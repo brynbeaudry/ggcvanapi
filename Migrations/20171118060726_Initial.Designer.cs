@@ -11,7 +11,7 @@ using System;
 namespace ggcvan.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20171118051159_Initial")]
+    [Migration("20171118060726_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -267,15 +267,14 @@ namespace ggcvan.Migrations
 
                     b.Property<string>("ClientSecret");
 
+                    b.Property<string>("ConcurrencyToken")
+                        .IsConcurrencyToken();
+
                     b.Property<string>("DisplayName");
 
                     b.Property<string>("PostLogoutRedirectUris");
 
                     b.Property<string>("RedirectUris");
-
-                    b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("Type")
                         .IsRequired();
@@ -295,6 +294,9 @@ namespace ggcvan.Migrations
 
                     b.Property<string>("ApplicationId");
 
+                    b.Property<string>("ConcurrencyToken")
+                        .IsConcurrencyToken();
+
                     b.Property<string>("Scopes");
 
                     b.Property<string>("Status")
@@ -302,10 +304,6 @@ namespace ggcvan.Migrations
 
                     b.Property<string>("Subject")
                         .IsRequired();
-
-                    b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("Type")
                         .IsRequired();
@@ -322,14 +320,13 @@ namespace ggcvan.Migrations
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<string>("ConcurrencyToken")
+                        .IsConcurrencyToken();
+
                     b.Property<string>("Description");
 
                     b.Property<string>("Name")
                         .IsRequired();
-
-                    b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
 
                     b.HasKey("Id");
 
@@ -347,6 +344,9 @@ namespace ggcvan.Migrations
 
                     b.Property<string>("Ciphertext");
 
+                    b.Property<string>("ConcurrencyToken")
+                        .IsConcurrencyToken();
+
                     b.Property<DateTimeOffset?>("CreationDate");
 
                     b.Property<DateTimeOffset?>("ExpirationDate");
@@ -357,10 +357,6 @@ namespace ggcvan.Migrations
 
                     b.Property<string>("Subject")
                         .IsRequired();
-
-                    b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
 
                     b.Property<string>("Type")
                         .IsRequired();

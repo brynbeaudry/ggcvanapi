@@ -76,10 +76,10 @@ namespace ggcvan.Migrations
                     Id = table.Column<string>(nullable: false),
                     ClientId = table.Column<string>(nullable: false),
                     ClientSecret = table.Column<string>(nullable: true),
+                    ConcurrencyToken = table.Column<string>(nullable: true),
                     DisplayName = table.Column<string>(nullable: true),
                     PostLogoutRedirectUris = table.Column<string>(nullable: true),
                     RedirectUris = table.Column<string>(nullable: true),
-                    Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
                     Type = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -92,9 +92,9 @@ namespace ggcvan.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
+                    ConcurrencyToken = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: false),
-                    Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true)
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -248,10 +248,10 @@ namespace ggcvan.Migrations
                 {
                     Id = table.Column<string>(nullable: false),
                     ApplicationId = table.Column<string>(nullable: true),
+                    ConcurrencyToken = table.Column<string>(nullable: true),
                     Scopes = table.Column<string>(nullable: true),
                     Status = table.Column<string>(nullable: false),
                     Subject = table.Column<string>(nullable: false),
-                    Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
                     Type = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
@@ -297,12 +297,12 @@ namespace ggcvan.Migrations
                     ApplicationId = table.Column<string>(nullable: true),
                     AuthorizationId = table.Column<string>(nullable: true),
                     Ciphertext = table.Column<string>(nullable: true),
+                    ConcurrencyToken = table.Column<string>(nullable: true),
                     CreationDate = table.Column<DateTimeOffset>(nullable: true),
                     ExpirationDate = table.Column<DateTimeOffset>(nullable: true),
                     Hash = table.Column<string>(nullable: true),
                     Status = table.Column<string>(nullable: true),
                     Subject = table.Column<string>(nullable: false),
-                    Timestamp = table.Column<byte[]>(rowVersion: true, nullable: true),
                     Type = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
