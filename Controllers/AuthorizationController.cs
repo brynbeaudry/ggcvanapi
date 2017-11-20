@@ -29,6 +29,8 @@ public class AuthorizationController : Controller
         private readonly ILogger _logger;
         private readonly IConfiguration _config;
         private const string GoogleApiTokenInfoUrl = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={0}";
+        private const string FacebookApiUserInfoUrl = "https://graph.facebook.com/{2}?input_token={0}&access_token={1}&fields={3}";
+        private const string FacebookApiTokenInfoUrl = "https://graph.facebook.com/debug_token?input_token={0}&access_token={1}";
         
 
         public AuthorizationController(
@@ -47,6 +49,7 @@ public class AuthorizationController : Controller
 
     public async Task<ProviderUserDetails> GetGoogleDetailsAsync(string providerToken)
     {
+
         var httpClient = new HttpClient();
         var requestUri = new Uri(string.Format(GoogleApiTokenInfoUrl, providerToken));
         
@@ -84,6 +87,66 @@ public class AuthorizationController : Controller
             Locale = googleApiTokenInfo.locale,
             Name = googleApiTokenInfo.name,
             ProviderUserId = googleApiTokenInfo.sub
+        };
+    }
+
+    public async Task<string> getHttpResponseResult(string url, string providerToken, bool facebook = false, string facebookId = ""){
+        var httpClient = new HttpClient();
+        Uri RequestUri = new Uri(string.Format(GoogleApiTokenInfoUrl, providerToken));
+        if(facebook)
+        {
+            var FacebookConfig = _config.GetSection("ExternalIdentities").GetSection("Facebook");
+            var AppId = FacebookConfig["app_id"];
+            var AppSecret = FacebookConfig["app_secret"];
+            if(facebookId.CompareTo("") == 0){
+                //facebook id is nothing
+                RequestUri = new Uri(string.Format(url, providerToken, $"{AppId}|{AppSecret}"));
+            }else{
+                //have fb id
+                RequestUri = new Uri(string.Format(url, providerToken, $"{AppId}|{AppSecret}", facebookId, "id,email,name,about,first_name,last_name,locale"));
+            }
+        }
+        HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
+        httpResponseMessage = await httpClient.GetAsync(RequestUri);
+
+        if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
+        {
+            //Console.WriteLine(ex.Message);
+            return null;
+        }
+
+        var response = httpResponseMessage.Content.ReadAsStringAsync().Result;
+        return response;
+    }
+
+    public async Task<ProviderUserDetails> GetFacebookDetailsAsync(string providerToken)
+    {
+        
+
+        var tokenInfoResponse = await getHttpResponseResult(FacebookApiTokenInfoUrl, providerToken, true);
+        var responseDataWrapper = JObject.Parse(tokenInfoResponse);
+        //the actual memebers of interest are wrapped in data key
+        var unwrappedResponse = responseDataWrapper.GetValue("data");
+
+        FacebookApiTokenInfo facebookApiTokenInfo = JsonConvert.DeserializeObject<FacebookApiTokenInfo>(unwrappedResponse.ToString());
+        
+        var fbUserInfoResponse = await getHttpResponseResult(FacebookApiUserInfoUrl, providerToken, true, facebookApiTokenInfo.user_id);
+        var fbUserInfo = JsonConvert.DeserializeObject<FacebookApiUserInfo>(fbUserInfoResponse);
+
+        /* if (!SupportedClientsIds.Contains(googleApiTokenInfo.aud))
+        {
+            Log.WarnFormat("Google API Token Info aud field ({0}) not containing the required client id", googleApiTokenInfo.aud);
+            return null;
+        } */
+
+        return new ProviderUserDetails
+        {
+            Email = fbUserInfo.email,
+            FirstName = fbUserInfo.first_name,
+            LastName = fbUserInfo.last_name,
+            Locale = fbUserInfo.locale,
+            Name = fbUserInfo.name,
+            ProviderUserId = fbUserInfo.id
         };
     }
     
@@ -326,7 +389,7 @@ public class AuthorizationController : Controller
         return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
     }
     
-    if (request.GrantType == "urn:ietf:params:oauth:grant-type:urn:ietf:params:oauth:grant-type:facebook_access_token")
+    if (request.GrantType == "urn:ietf:params:oauth:grant-type:facebook_access_token")
     {
         // Reject the request if the "assertion" parameter is missing.
         if (string.IsNullOrEmpty(request.Assertion))
@@ -341,17 +404,41 @@ public class AuthorizationController : Controller
         // Create a new ClaimsIdentity containing the claims that
         // will be used to create an id_token and/or an access token.
         var identity = new ClaimsIdentity(OpenIdConnectServerDefaults.AuthenticationScheme);
+        Console.WriteLine(identity.ToString());
+        Console.WriteLine(request.Code);
+
+        var fbDetails = await GetFacebookDetailsAsync(request.Assertion);
 
         // Manually validate the identity token issued by Google,
         // including the issuer, the signature and the audience.
         // Then, copy the claims you need to the "identity" instance.
-
+        identity.AddClaim(OpenIdConnectConstants.Claims.Subject,
+                fbDetails.ProviderUserId,
+                OpenIdConnectConstants.Destinations.AccessToken);
+        identity.AddClaim(OpenIdConnectConstants.Claims.Name, fbDetails.Name,
+                OpenIdConnectConstants.Destinations.AccessToken);
+        identity.AddClaim(OpenIdConnectConstants.Claims.Email, 
+            fbDetails.Email, 
+                OpenIdConnectConstants.Destinations.AccessToken);
+        identity.AddClaim(OpenIdConnectConstants.Claims.GivenName, 
+            fbDetails.FirstName, 
+                OpenIdConnectConstants.Destinations.AccessToken);
+        identity.AddClaim(OpenIdConnectConstants.Claims.FamilyName, 
+            fbDetails.LastName, 
+                OpenIdConnectConstants.Destinations.AccessToken);
+        identity.AddClaim(OpenIdConnectConstants.Claims.Locale, 
+            fbDetails.Locale, 
+                OpenIdConnectConstants.Destinations.AccessToken);
 
         // Create a new authentication ticket holding the user identity.
+        
+
         var ticket = new AuthenticationTicket(
             new ClaimsPrincipal(identity),
             new AuthenticationProperties(),
             OpenIdConnectServerDefaults.AuthenticationScheme);
+
+        // Then, copy the claims you need to the "identity" instance.
 
         ticket.SetScopes(
             OpenIdConnectConstants.Scopes.OpenId,
