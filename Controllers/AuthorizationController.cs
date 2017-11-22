@@ -248,8 +248,37 @@ public class AuthorizationController : Controller
                     await _userManager.ResetAccessFailedCountAsync(user);
                 }
 
-                // Create a new authentication ticket.
-                var ticket = await CreateTicketAsync(request, user);
+                var identity = new ClaimsIdentity(OpenIdConnectServerDefaults.AuthenticationScheme);
+
+                identity.AddClaim(OpenIdConnectConstants.Claims.Subject,
+                    user.Id,
+                        OpenIdConnectConstants.Destinations.AccessToken);
+                identity.AddClaim(OpenIdConnectConstants.Claims.Email, 
+                    user.Email, 
+                        OpenIdConnectConstants.Destinations.AccessToken);
+                if(user.FirstName!=null){
+                identity.AddClaim(OpenIdConnectConstants.Claims.GivenName, 
+                    user.FirstName, 
+                        OpenIdConnectConstants.Destinations.AccessToken);
+                }
+                if(user.LastName!=null){
+                identity.AddClaim(OpenIdConnectConstants.Claims.FamilyName, 
+                    user.LastName, 
+                        OpenIdConnectConstants.Destinations.AccessToken);
+                }
+
+                var ticket = new AuthenticationTicket(
+                    new ClaimsPrincipal(identity),
+                    new AuthenticationProperties(),
+                    OpenIdConnectServerDefaults.AuthenticationScheme);
+                
+                ticket.SetScopes(
+                    OpenIdConnectConstants.Scopes.OpenId,
+                    OpenIdConnectConstants.Scopes.OfflineAccess, 
+                    OpenIdConnectConstants.Scopes.Profile, 
+                    OpenIdConnectConstants.Scopes.Email);
+
+
 
                 return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
             }
@@ -383,8 +412,10 @@ public class AuthorizationController : Controller
         // Then, copy the claims you need to the "identity" instance.
 
         ticket.SetScopes(
-            OpenIdConnectConstants.Scopes.OpenId,
-            OpenIdConnectConstants.Scopes.OfflineAccess);
+                    OpenIdConnectConstants.Scopes.OpenId,
+                    OpenIdConnectConstants.Scopes.OfflineAccess, 
+                    OpenIdConnectConstants.Scopes.Profile, 
+                    OpenIdConnectConstants.Scopes.Email);
 
         return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
     }
@@ -441,8 +472,10 @@ public class AuthorizationController : Controller
         // Then, copy the claims you need to the "identity" instance.
 
         ticket.SetScopes(
-            OpenIdConnectConstants.Scopes.OpenId,
-            OpenIdConnectConstants.Scopes.OfflineAccess);
+                    OpenIdConnectConstants.Scopes.OpenId,
+                    OpenIdConnectConstants.Scopes.OfflineAccess, 
+                    OpenIdConnectConstants.Scopes.Profile, 
+                    OpenIdConnectConstants.Scopes.Email);
 
         return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
     }

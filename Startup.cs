@@ -62,45 +62,12 @@ namespace ggcvan
             {
                 options.ClaimsIdentity.UserNameClaimType = OpenIdConnectConstants.Claims.Name;
                 options.ClaimsIdentity.UserIdClaimType = OpenIdConnectConstants.Claims.Subject;
-                //options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
+                options.ClaimsIdentity.RoleClaimType = OpenIdConnectConstants.Claims.Role;
             });
 
             
 
             services.AddSingleton<IConfiguration>(Configuration);
-            
-            // Register the OAuth2 validation handler.
-            services.AddAuthentication()
-            .AddGoogle(googleOptions =>
-            {
-                var GoogleConfig = Configuration.GetSection("ExternalIdentities").GetSection("Google");
-                //Console.WriteLine(GoogleConfig["client_id"]);
-
-
-                googleOptions.ClientId = GoogleConfig["client_id"];
-                googleOptions.ClientSecret = GoogleConfig["client_secret"];
-            })
-            .AddFacebook(facebookOptions =>
-            {
-                var FacebookConfig = Configuration.GetSection("ExternalIdentities").GetSection("Facebook");
-                facebookOptions.AppId = FacebookConfig["app_id"];
-                facebookOptions.AppSecret = FacebookConfig["app_secret"];
-            })
-            .AddOAuthValidation();
-            /* .AddCookie(cfg => cfg.SlidingExpiration = true)
-            .AddJwtBearer(cfg =>
-              {
-                  cfg.RequireHttpsMetadata = false;
-                  cfg.SaveToken = true;
-
-                  cfg.TokenValidationParameters = new TokenValidationParameters()
-                  {
-                      ValidIssuer = Configuration["Tokens:Issuer"],
-                      ValidAudience = Configuration["Tokens:Issuer"],
-                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
-                  };
-
-              }); */
 
             // Register the OpenIddict services.
             services.AddOpenIddict(options =>
@@ -154,6 +121,39 @@ namespace ggcvan
                 // options.UseJsonWebTokens();
                 // options.AddEphemeralSigningKey();
             });
+            
+            // Register the OAuth2 validation handler.
+            services.AddAuthentication()
+            .AddGoogle(googleOptions =>
+            {
+                var GoogleConfig = Configuration.GetSection("ExternalIdentities").GetSection("Google");
+                //Console.WriteLine(GoogleConfig["client_id"]);
+
+
+                googleOptions.ClientId = GoogleConfig["client_id"];
+                googleOptions.ClientSecret = GoogleConfig["client_secret"];
+            })
+            .AddFacebook(facebookOptions =>
+            {
+                var FacebookConfig = Configuration.GetSection("ExternalIdentities").GetSection("Facebook");
+                facebookOptions.AppId = FacebookConfig["app_id"];
+                facebookOptions.AppSecret = FacebookConfig["app_secret"];
+            })
+            .AddOAuthValidation();
+            /* .AddCookie(cfg => cfg.SlidingExpiration = true)
+            .AddJwtBearer(cfg =>
+              {
+                  cfg.RequireHttpsMetadata = false;
+                  cfg.SaveToken = true;
+
+                  cfg.TokenValidationParameters = new TokenValidationParameters()
+                  {
+                      ValidIssuer = Configuration["Tokens:Issuer"],
+                      ValidAudience = Configuration["Tokens:Issuer"],
+                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Tokens:Key"]))
+                  };
+
+              }); */
 
              var policy = new Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicy();
  
