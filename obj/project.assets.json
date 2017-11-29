@@ -14193,6 +14193,7 @@
       "Microsoft.AspNetCore.Authentication.Facebook >= 2.0.1",
       "Microsoft.AspNetCore.Authentication.Google >= 2.0.1",
       "Microsoft.AspNetCore.Cors >= 2.0.1",
+      "Microsoft.AspNetCore.HttpOverrides >= 2.0.1",
       "Microsoft.EntityFrameworkCore >= 2.0.1",
       "Microsoft.EntityFrameworkCore.Design >= 2.0.1",
       "Microsoft.EntityFrameworkCore.Tools >= 2.0.1",
@@ -14208,23 +14209,23 @@
     ]
   },
   "packageFolders": {
-    "/Users/brynbeaudry/.nuget/packages/": {},
-    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
+    "/home/bryn/.nuget/packages/": {},
+    "/usr/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/brynbeaudry/P/ggcvanapi/ggcvan.csproj",
+      "projectUniqueName": "/home/bryn/www/ggcvanapi/ggcvan.csproj",
       "projectName": "ggcvan",
-      "projectPath": "/Users/brynbeaudry/P/ggcvanapi/ggcvan.csproj",
-      "packagesPath": "/Users/brynbeaudry/.nuget/packages/",
-      "outputPath": "/Users/brynbeaudry/P/ggcvanapi/obj/",
+      "projectPath": "/home/bryn/www/ggcvanapi/ggcvan.csproj",
+      "packagesPath": "/home/bryn/.nuget/packages/",
+      "outputPath": "/home/bryn/www/ggcvanapi/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        "/usr/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/Users/brynbeaudry/.nuget/NuGet/NuGet.Config"
+        "/home/bryn/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
@@ -14248,7 +14249,7 @@
         "dependencies": {
           "Microsoft.NETCore.App": {
             "target": "Package",
-            "version": "2.0.0",
+            "version": "2.0",
             "autoReferenced": true
           },
           "Microsoft.AspNetCore.All": {
@@ -14264,6 +14265,10 @@
             "version": "2.0.1"
           },
           "Microsoft.AspNetCore.Cors": {
+            "target": "Package",
+            "version": "2.0.1"
+          },
+          "Microsoft.AspNetCore.HttpOverrides": {
             "target": "Package",
             "version": "2.0.1"
           },
