@@ -17,10 +17,14 @@ namespace ggcvan
             BuildWebHost(args).Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+        public static IWebHost BuildWebHost(string[] args)
+        {
+            string env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            bool isDevelopment = env.Equals(EnvironmentName.Development);
+            return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .UseUrls("http://localhost:54321")
+                .UseUrls((isDevelopment)? "http://localhost:54321" : "http://localhost:5000")
                 .Build();
+        }
     }
 }
