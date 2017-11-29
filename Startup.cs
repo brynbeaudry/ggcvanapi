@@ -16,7 +16,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AspNet.Security.OpenIdConnect.Primitives;
-
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace ggcvan
 {
@@ -196,7 +196,10 @@ namespace ggcvan
             app.UseStaticFiles();
 
             app.UseCors("corsGlobalPolicy");
-
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            });
             app.UseAuthentication();
 
 
