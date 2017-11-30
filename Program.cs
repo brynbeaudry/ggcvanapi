@@ -18,18 +18,23 @@ namespace ggcvan
         
         public static void Main(string[] args)
         {
+            foreach (var item in args)
+            {
+                Console.WriteLine("item");
+            }
             BuildWebHost(args).Run();
         }
 
         public static IWebHost BuildWebHost(string[] args)
         {
+            //export ASPNETCORE_ENVIRONMENT=Development or Production
             string env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             Console.WriteLine(env);
             string url = ProdUrl;
-            if(env == "Developement") 
+            if(env.Equals("Development")) 
             {
                 url = DevUrl;
-            } 
+            }
             return WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseUrls(url)
