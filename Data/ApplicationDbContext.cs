@@ -33,6 +33,17 @@ namespace ggcvan.Data
 
             //Relations
 
+            builder.Entity<ApplicationUser>()
+                .HasIndex("ProviderId")
+                .IsUnique()
+                .HasName("ProviderIdIndex");
+
+            builder.Entity<ApplicationUser>()
+                .HasIndex("ProviderName")
+                .IsUnique()
+                .HasName("ProviderNameIndex");
+            //can make forieg key later
+
             builder.Entity<Event>()
             .Property<int>("EventGame");
             builder.Entity<Event>()

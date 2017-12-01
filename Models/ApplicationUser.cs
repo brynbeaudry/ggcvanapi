@@ -12,11 +12,13 @@ namespace ggcvan.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser 
     {
-        
+
+        public override String UserName { get; set; }
         public String FirstName { get; set; }
         public String LastName { get; set; }
         public String FullName { get; set; }
-
+        public override String Email { get; set; }
+        
         public String ProviderName { get; set; }
 
         public String ProviderId { get; set; }  
@@ -29,23 +31,22 @@ namespace ggcvan.Models
         [JsonIgnore]
         public override bool PhoneNumberConfirmed { get; set; }
         [JsonIgnore]
-        public override string PhoneNumber { get; set; }
+        public override String PhoneNumber { get; set; }
         [JsonIgnore]
-        public override string ConcurrencyStamp { get; set; }
+        public override String ConcurrencyStamp { get; set; }
         [JsonIgnore]
-        public override string SecurityStamp { get; set; }
+        public override String SecurityStamp { get; set; }
         [JsonIgnore]
-        public override string PasswordHash { get; set; }
+        public override String PasswordHash { get; set; }
         [JsonIgnore]
         public override bool EmailConfirmed { get; set; }
         [JsonIgnore]
-        public override string NormalizedEmail { get; set; }
-        [JsonIgnore]
-        public override string Email { get; set; }
-        [JsonIgnore]
-        public override string NormalizedUserName { get; set; }
+        public override String NormalizedEmail { get; set; }
 
-        public override string UserName { get; set; }
+        
+        [JsonIgnore]
+        public override String NormalizedUserName { get; set; }
+
         [JsonIgnore]
         public override bool LockoutEnabled { get; set; }
         [JsonIgnore]
