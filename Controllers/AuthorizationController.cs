@@ -521,45 +521,45 @@ public class AuthorizationController : Controller
                 }
             }
 
-        // Manually validate the identity token issued by Google,
-        // including the issuer, the signature and the audience.
-        // Then, copy the claims you need to the "identity" instance.
-        identity.AddClaim(OpenIdConnectConstants.Claims.Subject,
-                fbDetails.ProviderUserId,
-                OpenIdConnectConstants.Destinations.AccessToken);
-        identity.AddClaim(OpenIdConnectConstants.Claims.Name, fbDetails.Name,
-                OpenIdConnectConstants.Destinations.AccessToken);
-        identity.AddClaim(OpenIdConnectConstants.Claims.Email, 
-            fbDetails.Email, 
-                OpenIdConnectConstants.Destinations.AccessToken);
-        identity.AddClaim(OpenIdConnectConstants.Claims.GivenName, 
-            fbDetails.FirstName, 
-                OpenIdConnectConstants.Destinations.AccessToken);
-        identity.AddClaim(OpenIdConnectConstants.Claims.FamilyName, 
-            fbDetails.LastName, 
-                OpenIdConnectConstants.Destinations.AccessToken);
-        identity.AddClaim(OpenIdConnectConstants.Claims.Locale, 
-            fbDetails.Locale, 
-                OpenIdConnectConstants.Destinations.AccessToken);
+            // Manually validate the identity token issued by Google,
+            // including the issuer, the signature and the audience.
+            // Then, copy the claims you need to the "identity" instance.
+            identity.AddClaim(OpenIdConnectConstants.Claims.Subject,
+                    fbDetails.ProviderUserId,
+                    OpenIdConnectConstants.Destinations.AccessToken);
+            identity.AddClaim(OpenIdConnectConstants.Claims.Name, fbDetails.Name,
+                    OpenIdConnectConstants.Destinations.AccessToken);
+            identity.AddClaim(OpenIdConnectConstants.Claims.Email, 
+                fbDetails.Email, 
+                    OpenIdConnectConstants.Destinations.AccessToken);
+            identity.AddClaim(OpenIdConnectConstants.Claims.GivenName, 
+                fbDetails.FirstName, 
+                    OpenIdConnectConstants.Destinations.AccessToken);
+            identity.AddClaim(OpenIdConnectConstants.Claims.FamilyName, 
+                fbDetails.LastName, 
+                    OpenIdConnectConstants.Destinations.AccessToken);
+            identity.AddClaim(OpenIdConnectConstants.Claims.Locale, 
+                fbDetails.Locale, 
+                    OpenIdConnectConstants.Destinations.AccessToken);
 
-        // Create a new authentication ticket holding the user identity.
-        
+            // Create a new authentication ticket holding the user identity.
+            
 
-        var ticket = new AuthenticationTicket(
-            new ClaimsPrincipal(identity),
-            new AuthenticationProperties(),
-            OpenIdConnectServerDefaults.AuthenticationScheme);
+            var ticket = new AuthenticationTicket(
+                new ClaimsPrincipal(identity),
+                new AuthenticationProperties(),
+                OpenIdConnectServerDefaults.AuthenticationScheme);
 
-        // Then, copy the claims you need to the "identity" instance.
+            // Then, copy the claims you need to the "identity" instance.
 
-        ticket.SetScopes(
-                    OpenIdConnectConstants.Scopes.OpenId,
-                    OpenIdConnectConstants.Scopes.OfflineAccess, 
-                    OpenIdConnectConstants.Scopes.Profile, 
-                    OpenIdConnectConstants.Scopes.Email);
+            ticket.SetScopes(
+                        OpenIdConnectConstants.Scopes.OpenId,
+                        OpenIdConnectConstants.Scopes.OfflineAccess, 
+                        OpenIdConnectConstants.Scopes.Profile, 
+                        OpenIdConnectConstants.Scopes.Email);
 
-        return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
-    }
+            return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
+        }
 
         return BadRequest(new OpenIdConnectResponse
         {
