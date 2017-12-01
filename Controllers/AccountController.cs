@@ -100,7 +100,14 @@ namespace ggcvan.Controllers
         public async Task<IActionResult> ApiRegisterAsync([FromBody]LoginViewModel lmv)
         {
                 // save 
-                var result = await _userManager.CreateAsync(new ApplicationUser(){ Email = lmv.Email, UserName = lmv.Email}, lmv.Password);
+                var result = await _userManager.CreateAsync(
+                    new ApplicationUser(){ 
+                        Email = lmv.Email, 
+                        UserName = lmv.Email, 
+                        ProviderName = "EMAIL",
+                        PictureUrl = "https://cdn.iconscout.com/public/images/icon/premium/png-512/gamer-games-video-casino-372bcf114ef0140a-512x512.png"
+                    }, 
+                    lmv.Password);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");

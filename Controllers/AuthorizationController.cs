@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AspNet.Security.OpenIdConnect.Extensions;
 using AspNet.Security.OpenIdConnect.Primitives;
 using AspNet.Security.OpenIdConnect.Server;
+using ggcvan.Data;
 using ggcvan.Models;
 using ggcvan.Services;
 using Microsoft.AspNetCore.Authentication;
@@ -28,6 +29,8 @@ public class AuthorizationController : Controller
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
         private readonly IConfiguration _config;
+
+        private readonly ApplicationDbContext _ctx;
         private const string GoogleApiTokenInfoUrl = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={0}";
         private const string FacebookApiUserInfoUrl = "https://graph.facebook.com/{2}?input_token={0}&access_token={1}&fields={3}";
         private const string FacebookApiTokenInfoUrl = "https://graph.facebook.com/debug_token?input_token={0}&access_token={1}";
@@ -38,13 +41,16 @@ public class AuthorizationController : Controller
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ILogger<AuthorizationController> logger,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            ApplicationDbContext ctx
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _config = configuration;
+            _ctx = ctx;
         }
 
     public async Task<ProviderUserDetails> GetGoogleDetailsAsync(string providerToken)
@@ -361,61 +367,99 @@ public class AuthorizationController : Controller
 
         if (request.GrantType == "urn:ietf:params:oauth:grant-type:google_identity_token")
         {
-        // Reject the request if the "assertion" parameter is missing.
-        if (string.IsNullOrEmpty(request.Assertion))
-        {
-            return BadRequest(new OpenIdConnectResponse
+            // Reject the request if the "assertion" parameter is missing.
+            if (string.IsNullOrEmpty(request.Assertion))
             {
-                Error = OpenIdConnectConstants.Errors.InvalidRequest,
-                ErrorDescription = "The mandatory 'assertion' parameter was missing."
-            });
-        }
+                return BadRequest(new OpenIdConnectResponse
+                {
+                    Error = OpenIdConnectConstants.Errors.InvalidRequest,
+                    ErrorDescription = "The mandatory 'assertion' parameter was missing."
+                });
+            }
 
 
-        // Create a new ClaimsIdentity containing the claims that
-        // will be used to create an id_token and/or an access token.
-        var identity = new ClaimsIdentity(OpenIdConnectServerDefaults.AuthenticationScheme);
-        Console.WriteLine(identity.ToString());
-        Console.WriteLine(request.Code);
+            // Create a new ClaimsIdentity containing the claims that
+            // will be used to create an id_token and/or an access token.
+            var identity = new ClaimsIdentity(OpenIdConnectServerDefaults.AuthenticationScheme);
+            Console.WriteLine(identity.ToString());
+            Console.WriteLine(request.Code);
 
-        var googleDetails = await GetGoogleDetailsAsync(request.Assertion);
+            var googleDetails = await GetGoogleDetailsAsync(request.Assertion);
+            if(googleDetails != null){
+               // save 
+                //check to see if the ProviderId is already listed for this user
+                var repeatUser = _ctx.Users
+                    .Where(x => x.ProviderId.Equals(googleDetails.ProviderUserId))
+                    .FirstOrDefault();
+                //this signed in google user is not a repeat user and hasn't been saved yet
+                if(repeatUser.Equals(null))
+                {
+                    var result = await _userManager.CreateAsync(
+                    new ApplicationUser(){ 
+                        Email = googleDetails.Email, 
+                        FirstName = googleDetails.FirstName,
+                        FullName = googleDetails.Name,
+                        LastName = googleDetails.LastName,
+                        ProviderId = googleDetails.ProviderUserId,
+                        ProviderName = "GOOGLE",
+                        PictureUrl = "https://cdn.iconscout.com/public/images/icon/premium/png-512/gamer-games-video-casino-372bcf114ef0140a-512x512.png"
+                    });
+                    if (!result.Succeeded)
+                    {
+                        AddErrors(result);
+                        return BadRequest(result);
+                    }else{
+                        _logger.LogInformation("Social User created a new account without password.");
 
-        // Manually validate the identity token issued by Google,
-        // including the issuer, the signature and the audience.
-        // Then, copy the claims you need to the "identity" instance.
-        identity.AddClaim(OpenIdConnectConstants.Claims.Subject,
-                googleDetails.ProviderUserId,
-                OpenIdConnectConstants.Destinations.AccessToken);
-        identity.AddClaim(OpenIdConnectConstants.Claims.Name, googleDetails.Name,
-                OpenIdConnectConstants.Destinations.AccessToken);
-        identity.AddClaim(OpenIdConnectConstants.Claims.Email, 
-            googleDetails.Email, 
-                OpenIdConnectConstants.Destinations.AccessToken);
-        identity.AddClaim(OpenIdConnectConstants.Claims.GivenName, 
-            googleDetails.FirstName, 
-                OpenIdConnectConstants.Destinations.AccessToken);
-        identity.AddClaim(OpenIdConnectConstants.Claims.FamilyName, 
-            googleDetails.LastName, 
-                OpenIdConnectConstants.Destinations.AccessToken);
-        identity.AddClaim(OpenIdConnectConstants.Claims.Locale, 
-            googleDetails.Locale, 
-                OpenIdConnectConstants.Destinations.AccessToken);
+                        //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                        //await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
 
-        // Create a new authentication ticket holding the user identity.
-        
+                        //await _signInManager.SignInAsync(user, isPersistent: false);
+                        //_logger.LogInformation("User created a new account with password.");
+                        //return Ok(result);
+                        //return RedirectToLocal(returnUrl);
+                    }
+                }
+            }
 
-        var ticket = new AuthenticationTicket(
-            new ClaimsPrincipal(identity),
-            new AuthenticationProperties(),
-            OpenIdConnectServerDefaults.AuthenticationScheme);
 
-        // Then, copy the claims you need to the "identity" instance.
+            // Manually validate the identity token issued by Google,
+            // including the issuer, the signature and the audience.
+            // Then, copy the claims you need to the "identity" instance.
+            identity.AddClaim(OpenIdConnectConstants.Claims.Subject,
+                    googleDetails.ProviderUserId,
+                    OpenIdConnectConstants.Destinations.AccessToken);
+            identity.AddClaim(OpenIdConnectConstants.Claims.Name, googleDetails.Name,
+                    OpenIdConnectConstants.Destinations.AccessToken);
+            identity.AddClaim(OpenIdConnectConstants.Claims.Email, 
+                googleDetails.Email, 
+                    OpenIdConnectConstants.Destinations.AccessToken);
+            identity.AddClaim(OpenIdConnectConstants.Claims.GivenName, 
+                googleDetails.FirstName, 
+                    OpenIdConnectConstants.Destinations.AccessToken);
+            identity.AddClaim(OpenIdConnectConstants.Claims.FamilyName, 
+                googleDetails.LastName, 
+                    OpenIdConnectConstants.Destinations.AccessToken);
+            identity.AddClaim(OpenIdConnectConstants.Claims.Locale, 
+                googleDetails.Locale, 
+                    OpenIdConnectConstants.Destinations.AccessToken);
 
-        ticket.SetScopes(
-                    OpenIdConnectConstants.Scopes.OpenId,
-                    OpenIdConnectConstants.Scopes.OfflineAccess, 
-                    OpenIdConnectConstants.Scopes.Profile, 
-                    OpenIdConnectConstants.Scopes.Email);
+            // Create a new authentication ticket holding the user identity.
+            
+
+            var ticket = new AuthenticationTicket(
+                new ClaimsPrincipal(identity),
+                new AuthenticationProperties(),
+                OpenIdConnectServerDefaults.AuthenticationScheme);
+
+            // Then, copy the claims you need to the "identity" instance.
+
+            ticket.SetScopes(
+                        OpenIdConnectConstants.Scopes.OpenId,
+                        OpenIdConnectConstants.Scopes.OfflineAccess, 
+                        OpenIdConnectConstants.Scopes.Profile, 
+                        OpenIdConnectConstants.Scopes.Email);
 
         return SignIn(ticket.Principal, ticket.Properties, ticket.AuthenticationScheme);
     }
@@ -439,6 +483,43 @@ public class AuthorizationController : Controller
         Console.WriteLine(request.Code);
 
         var fbDetails = await GetFacebookDetailsAsync(request.Assertion);
+        if(fbDetails != null){
+                // save 
+                //check to see if the ProviderId is already listed for this user
+                var repeatUser = _ctx.Users
+                    .Where(x => x.ProviderId.Equals(fbDetails.ProviderUserId))
+                    .FirstOrDefault();
+               // save 
+               if(repeatUser.Equals(null))
+                {
+                    var result = await _userManager.CreateAsync(
+                        new ApplicationUser(){ 
+                            Email = fbDetails.Email, 
+                            FirstName = fbDetails.FirstName,
+                            FullName = fbDetails.Name,
+                            LastName = fbDetails.LastName,
+                            ProviderId = fbDetails.ProviderUserId,
+                            ProviderName = "FACEBOOK",
+                            PictureUrl = "https://cdn.iconscout.com/public/images/icon/premium/png-512/gamer-games-video-casino-372bcf114ef0140a-512x512.png"
+                    });
+                    if (!result.Succeeded)
+                    {
+                        AddErrors(result);
+                        return BadRequest(result);
+                    }else{
+                        _logger.LogInformation("Social User created a new account without password.");
+
+                        //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                        //var callbackUrl = Url.EmailConfirmationLink(user.Id, code, Request.Scheme);
+                        //await _emailSender.SendEmailConfirmationAsync(model.Email, callbackUrl);
+
+                        //await _signInManager.SignInAsync(user, isPersistent: false);
+                        //_logger.LogInformation("User created a new account with password.");
+                        //return Ok(result);
+                        //return RedirectToLocal(returnUrl);
+                    }
+                }
+            }
 
         // Manually validate the identity token issued by Google,
         // including the issuer, the signature and the audience.
@@ -665,6 +746,13 @@ public class AuthorizationController : Controller
         }
         return ticket;
     }
+    private void AddErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+        }
 
         /* [Authorize]
         //[ValidateAntiForgeryToken]
