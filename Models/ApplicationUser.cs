@@ -16,6 +16,12 @@ namespace ggcvan.Models
         public String FirstName { get; set; }
         public String LastName { get; set; }
         public String FullName { get; set; }
+
+        public String ProviderName { get; set; }
+
+        public String ProviderId { get; set; }  
+        public String PictureUrl { get; set; }
+
         [JsonIgnore]
         public override DateTimeOffset? LockoutEnd { get; set; }
         [JsonIgnore]
@@ -38,7 +44,7 @@ namespace ggcvan.Models
         public override string Email { get; set; }
         [JsonIgnore]
         public override string NormalizedUserName { get; set; }
-        [JsonIgnore]
+
         public override string UserName { get; set; }
         [JsonIgnore]
         public override bool LockoutEnabled { get; set; }
