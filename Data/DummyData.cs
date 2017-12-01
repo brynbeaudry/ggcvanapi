@@ -29,7 +29,7 @@ namespace ggcvan.Data
                 db.Games.Add(new Game
                 {
                     Title = "Super Smash Brothers",
-                    Description = "The N64 Version of Super Smash Brothers",
+                    GameDescription = "The N64 Version of Super Smash Brothers",
                     NumberOfPlayers = 4,
                     ImageUrl = "http://www.yoshismoon.com/soundtracks/soundtrack-smash64.jpg",
                     Url = "https://www.ssbwiki.com/Super_Smash_Bros."
@@ -50,7 +50,7 @@ namespace ggcvan.Data
                     Host = "BCIT SA",
                     StartTime = DateTime.Now.Add(new TimeSpan(24,0,0)),
                     EndTime = DateTime.Now.Add(new TimeSpan(74, 0, 0)),
-                    Description = "Playing Smash @ Bcit",
+                    EventDescription = "Playing Smash @ Bcit",
                     Game = db.Games.First(),
                     Title = "SMASH"
                 });

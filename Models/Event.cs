@@ -28,7 +28,7 @@ namespace ggcvan.Models
         [Range(0, 9999999999999999.99)]
         public double Longitude { get; set; }
 
-        public string Description { get; set; }
+        public string EventDescription { get; set; }
         public string Host { get; set; }
         public string LocationDescription { get; set; }
 
