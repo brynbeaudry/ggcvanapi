@@ -193,7 +193,7 @@ public class AuthorizationController : Controller
                     });
                 } */
 
-                var user = await _userManager.FindByNameAsync(request.Username);
+                var user = await _userManager.FindByEmailAsync(request.Username);
 
                 if (user == null)
                 {
@@ -396,8 +396,9 @@ public class AuthorizationController : Controller
                 {
                     var result = await _userManager.CreateAsync(
                     new ApplicationUser(){ 
-                        Email = googleDetails.Email, 
-                        FirstName = googleDetails.FirstName,
+                        Email = googleDetails.Email,
+                        FirstName = googleDetails.FirstName, 
+                        UserName = googleDetails.Email.Split('@')[0],
                         FullName = googleDetails.Name,
                         LastName = googleDetails.LastName,
                         ProviderId = googleDetails.ProviderUserId,
@@ -495,6 +496,7 @@ public class AuthorizationController : Controller
                     var result = await _userManager.CreateAsync(
                         new ApplicationUser(){ 
                             Email = fbDetails.Email, 
+                            UserName = fbDetails.Email.Split('@')[0],
                             FirstName = fbDetails.FirstName,
                             FullName = fbDetails.Name,
                             LastName = fbDetails.LastName,

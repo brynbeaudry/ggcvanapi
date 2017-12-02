@@ -99,11 +99,10 @@ namespace ggcvan.Controllers
         [HttpPost("/api/register")]
         public async Task<IActionResult> ApiRegisterAsync([FromBody]LoginViewModel lmv)
         {
-                // save 
                 var result = await _userManager.CreateAsync(
                     new ApplicationUser(){ 
                         Email = lmv.Email, 
-                        UserName = lmv.UserName, 
+                        UserName = lmv.UserName,
                         ProviderName = "EMAIL",
                         ProviderId = $"GGCVAN_{Guid.NewGuid().ToString()}",
                         PictureUrl = "https://cdn.iconscout.com/public/images/icon/premium/png-512/gamer-games-video-casino-372bcf114ef0140a-512x512.png"
@@ -123,7 +122,7 @@ namespace ggcvan.Controllers
                     //return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
-            return BadRequest(result);
+                return BadRequest(result);
         }
 
         

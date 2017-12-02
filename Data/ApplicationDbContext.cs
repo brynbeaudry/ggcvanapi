@@ -37,10 +37,13 @@ namespace ggcvan.Data
                 .HasIndex("ProviderId")
                 .IsUnique()
                 .HasName("ProviderIdIndex");
+            
+            builder.Entity<ApplicationUser>()
+                .HasIndex("UserName")
+                .HasName("NonNormalizedUserNameIndex");
 
             builder.Entity<ApplicationUser>()
                 .HasIndex("ProviderName")
-                .IsUnique()
                 .HasName("ProviderNameIndex");
             //can make forieg key later
 
