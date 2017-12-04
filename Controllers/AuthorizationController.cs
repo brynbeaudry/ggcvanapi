@@ -391,8 +391,9 @@ public class AuthorizationController : Controller
                 var repeatUser = _ctx.Users
                     .Where(x => x.ProviderId.Equals(googleDetails.ProviderUserId))
                     .FirstOrDefault();
+                
                 //this signed in google user is not a repeat user and hasn't been saved yet
-                if(repeatUser.Equals(null))
+                if(repeatUser == null)
                 {
                     var result = await _userManager.CreateAsync(
                     new ApplicationUser(){ 
@@ -491,7 +492,7 @@ public class AuthorizationController : Controller
                     .Where(x => x.ProviderId.Equals(fbDetails.ProviderUserId))
                     .FirstOrDefault();
                // save 
-               if(repeatUser.Equals(null))
+               if(repeatUser == null)
                 {
                     var result = await _userManager.CreateAsync(
                         new ApplicationUser(){ 
