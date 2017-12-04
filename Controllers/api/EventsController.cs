@@ -31,7 +31,8 @@ namespace ggcvan.Controllers.api
         [HttpGet]
         public IEnumerable<Event> GetEvents()
         {
-            return _context.Events;
+            return _context.Events
+                .Include(m => m.Game);
         }
 
         // GET: api/Events/5

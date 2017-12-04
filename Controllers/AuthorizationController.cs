@@ -399,7 +399,7 @@ public class AuthorizationController : Controller
                     new ApplicationUser(){ 
                         Email = googleDetails.Email,
                         FirstName = googleDetails.FirstName, 
-                        UserName = googleDetails.Email.Split('@')[0],
+                        UserName = $"{googleDetails.Email.Split('@')[0]}_Google",
                         FullName = googleDetails.Name,
                         LastName = googleDetails.LastName,
                         ProviderId = googleDetails.ProviderUserId,
@@ -497,7 +497,7 @@ public class AuthorizationController : Controller
                     var result = await _userManager.CreateAsync(
                         new ApplicationUser(){ 
                             Email = fbDetails.Email, 
-                            UserName = fbDetails.Email.Split('@')[0],
+                            UserName = $"{fbDetails.Email.Split('@')[0]}_Facebook",
                             FirstName = fbDetails.FirstName,
                             FullName = fbDetails.Name,
                             LastName = fbDetails.LastName,
