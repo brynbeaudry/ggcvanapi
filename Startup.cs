@@ -51,6 +51,7 @@ namespace ggcvan
                     options.Password.RequireUppercase = false;
                     options.Password.RequireLowercase = true;
                     options.Password.RequiredUniqueChars = 2;
+                    options.Lockout.AllowedForNewUsers = false;
                 }))
              .AddEntityFrameworkStores<ApplicationDbContext>()
              .AddDefaultTokenProviders();

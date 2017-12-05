@@ -11,9 +11,10 @@ using System;
 namespace ggcvan.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171201200641_NoUniqProvNameUniqUsrnm")]
+    partial class NoUniqProvNameUniqUsrnm
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,6 +90,7 @@ namespace ggcvan.Migrations
                         .HasName("ProviderNameIndex");
 
                     b.HasIndex("UserName")
+                        .IsUnique()
                         .HasName("NonNormalizedUserNameIndex");
 
                     b.ToTable("AspNetUsers");

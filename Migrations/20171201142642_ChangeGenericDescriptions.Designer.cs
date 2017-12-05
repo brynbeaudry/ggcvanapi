@@ -11,9 +11,10 @@ using System;
 namespace ggcvan.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171201142642_ChangeGenericDescriptions")]
+    partial class ChangeGenericDescriptions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,10 +87,8 @@ namespace ggcvan.Migrations
                         .HasName("ProviderIdIndex");
 
                     b.HasIndex("ProviderName")
+                        .IsUnique()
                         .HasName("ProviderNameIndex");
-
-                    b.HasIndex("UserName")
-                        .HasName("NonNormalizedUserNameIndex");
 
                     b.ToTable("AspNetUsers");
                 });

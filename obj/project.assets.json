@@ -14209,23 +14209,23 @@
     ]
   },
   "packageFolders": {
-    "/home/bryn/.nuget/packages/": {},
-    "/usr/share/dotnet/sdk/NuGetFallbackFolder": {}
+    "/Users/brynbeaudry/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/bryn/www/ggcvanapi/ggcvan.csproj",
+      "projectUniqueName": "/Users/brynbeaudry/P/ggcvanapi/ggcvan.csproj",
       "projectName": "ggcvan",
-      "projectPath": "/home/bryn/www/ggcvanapi/ggcvan.csproj",
-      "packagesPath": "/home/bryn/.nuget/packages/",
-      "outputPath": "/home/bryn/www/ggcvanapi/obj/",
+      "projectPath": "/Users/brynbeaudry/P/ggcvanapi/ggcvan.csproj",
+      "packagesPath": "/Users/brynbeaudry/.nuget/packages/",
+      "outputPath": "/Users/brynbeaudry/P/ggcvanapi/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "/usr/share/dotnet/sdk/NuGetFallbackFolder"
+        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/home/bryn/.nuget/NuGet/NuGet.Config"
+        "/Users/brynbeaudry/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.0"
@@ -14249,7 +14249,7 @@
         "dependencies": {
           "Microsoft.NETCore.App": {
             "target": "Package",
-            "version": "2.0",
+            "version": "2.0.0",
             "autoReferenced": true
           },
           "Microsoft.AspNetCore.All": {

@@ -10,15 +10,3 @@
 /Users/brynbeaudry/P/ggcvanapi/obj/Debug/netcoreapp2.0/ggcvan.AssemblyInfo.cs
 /Users/brynbeaudry/P/ggcvanapi/obj/Debug/netcoreapp2.0/ggcvan.dll
 /Users/brynbeaudry/P/ggcvanapi/obj/Debug/netcoreapp2.0/ggcvan.pdb
-/home/bryn/www/ggcvanapi/bin/Debug/netcoreapp2.0/app.db
-/home/bryn/www/ggcvanapi/bin/Debug/netcoreapp2.0/ggcvan.deps.json
-/home/bryn/www/ggcvanapi/bin/Debug/netcoreapp2.0/ggcvan.runtimeconfig.json
-/home/bryn/www/ggcvanapi/bin/Debug/netcoreapp2.0/ggcvan.runtimeconfig.dev.json
-/home/bryn/www/ggcvanapi/bin/Debug/netcoreapp2.0/ggcvan.dll
-/home/bryn/www/ggcvanapi/bin/Debug/netcoreapp2.0/ggcvan.pdb
-/home/bryn/www/ggcvanapi/obj/Debug/netcoreapp2.0/ggcvan.csproj.CoreCompileInputs.cache
-/home/bryn/www/ggcvanapi/obj/Debug/netcoreapp2.0/UserSecretsAssemblyInfo.cs
-/home/bryn/www/ggcvanapi/obj/Debug/netcoreapp2.0/ggcvan.AssemblyInfoInputs.cache
-/home/bryn/www/ggcvanapi/obj/Debug/netcoreapp2.0/ggcvan.AssemblyInfo.cs
-/home/bryn/www/ggcvanapi/obj/Debug/netcoreapp2.0/ggcvan.dll
-/home/bryn/www/ggcvanapi/obj/Debug/netcoreapp2.0/ggcvan.pdb

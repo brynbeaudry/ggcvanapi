@@ -11,9 +11,10 @@ using System;
 namespace ggcvan.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171201101919_UK_ProviderId")]
+    partial class UK_ProviderId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -82,14 +83,7 @@ namespace ggcvan.Migrations
                         .HasName("UserNameIndex");
 
                     b.HasIndex("ProviderId")
-                        .IsUnique()
-                        .HasName("ProviderIdIndex");
-
-                    b.HasIndex("ProviderName")
-                        .HasName("ProviderNameIndex");
-
-                    b.HasIndex("UserName")
-                        .HasName("NonNormalizedUserNameIndex");
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers");
                 });
@@ -100,11 +94,11 @@ namespace ggcvan.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Description");
+
                     b.Property<DateTime>("EndTime");
 
                     b.Property<string>("EventCreator");
-
-                    b.Property<string>("EventDescription");
 
                     b.Property<int>("EventGame");
 
@@ -150,7 +144,7 @@ namespace ggcvan.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("GameDescription");
+                    b.Property<string>("Description");
 
                     b.Property<string>("ImageUrl");
 
