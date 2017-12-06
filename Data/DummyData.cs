@@ -34,6 +34,39 @@ namespace ggcvan.Data
                     ImageUrl = "http://www.yoshismoon.com/soundtracks/soundtrack-smash64.jpg",
                     Url = "https://www.ssbwiki.com/Super_Smash_Bros."
                 });
+                db.Games.Add(new Game
+                {
+                    Title = "Marvel vs Capcom",
+                    GameDescription = "Marvel vs. Capcom is a series of crossover fighting games developed and published by Capcom, featuring characters from their own video game franchises and comic book series published by Marvel Comics.",
+                    NumberOfPlayers = 4,
+                    ImageUrl = "https://upload.wikimedia.org/wikipedia/en/6/62/MvCI_Cover.png",
+                    Url = "https://en.wikipedia.org/wiki/Marvel_vs._Capcom:_Infinite"
+                });
+                db.Games.Add(new Game
+                {
+                    Title = "Defense of the Ancients (DotA)",
+                    GameDescription = "Defense of the Ancients (DotA) is a multiplayer online battle arena mod for the video game Warcraft III: Reign of Chaos and its expansion, Warcraft III: The Frozen Throne. ",
+                    NumberOfPlayers = 16,
+                    ImageUrl = "https://upload.wikimedia.org/wikipedia/en/4/42/Dota75-loading-screen.png",
+                    Url = "https://en.wikipedia.org/wiki/Defense_of_the_Ancients"
+                });
+                db.Games.Add(new Game
+                {
+                    Title = "League of Legends",
+                    GameDescription = "League of Legends is a multiplayer online battle arena video game developed and published by Riot Games for Microsoft Windows and macOS.",
+                    NumberOfPlayers = 16,
+                    ImageUrl = "https://i.ytimg.com/vi/L7L7M_PPzJs/hqdefault.jpg",
+                    Url = "https://en.wikipedia.org/wiki/League_of_Legends"
+                });
+                db.Games.Add(new Game
+                {
+                    Title = "Super Street Fighter II Turbo",
+                    GameDescription = "Super Street Fighter II Turbo[a] is a competitive fighting game released for the arcades by Capcom in 1994. It is the fifth installment in the Street Fighter II sub-series of Street Fighter games, following Super Street Fighter II: The New Challengers.",
+                    NumberOfPlayers = 2,
+                    ImageUrl = "http://backinmyplay.com/wp-content/uploads/2015/12/cover_large.jpg",
+                    Url = "https://en.wikipedia.org/wiki/Super_Street_Fighter_II_Turbo"
+                });
+
             }
             db.SaveChanges();
 
@@ -51,8 +84,60 @@ namespace ggcvan.Data
                     StartTime = DateTime.Now.Add(new TimeSpan(24,0,0)),
                     EndTime = DateTime.Now.Add(new TimeSpan(74, 0, 0)),
                     EventDescription = "Playing Smash @ Bcit",
-                    Game = db.Games.First(),
-                    Title = "SMASH"
+                    Game = db.Games.FirstOrDefault(g=> g.Title == "Super Smash Brothers"),
+                    Title = "Super Smash Brothers Tournament at BCIT"
+                });
+                db.Events.Add(new Event
+                {
+                    Creator = db.Users.FirstOrDefault(u=> u.Email == "test@user.com"),
+                    Latitude = 49.248499,
+                    Longitude = -123.001375,
+                    LocationDescription = "BCIT",
+                    Host = "BCIT SA",
+                    StartTime = DateTime.Now.Add(new TimeSpan(24,0,0)),
+                    EndTime = DateTime.Now.Add(new TimeSpan(74, 0, 0)),
+                    EventDescription = "Playing MVC @ Bcit",
+                    Game = db.Games.FirstOrDefault(g=> g.Title == "Marvel vs Capcom"),
+                    Title = "Marvel vs Capcom Tournament at BCIT"
+                });
+                db.Events.Add(new Event
+                {
+                    Creator = db.Users.FirstOrDefault(u=> u.Email == "test@user.com"),
+                    Latitude = 49.248499,
+                    Longitude = -123.001375,
+                    LocationDescription = "BCIT",
+                    Host = "BCIT SA",
+                    StartTime = DateTime.Now.Add(new TimeSpan(24,0,0)),
+                    EndTime = DateTime.Now.Add(new TimeSpan(74, 0, 0)),
+                    EventDescription = "Playing Defense of the Ancients (DotA) @ Bcit",
+                    Game = db.Games.FirstOrDefault(g=> g.Title == "Defense of the Ancients (DotA)"),
+                    Title = "Defense of the Ancients (DotA) Tournament at BCIT"
+                });
+                db.Events.Add(new Event
+                {
+                    Creator = db.Users.FirstOrDefault(u=> u.Email == "test@user.com"),
+                    Latitude = 49.248499,
+                    Longitude = -123.001375,
+                    LocationDescription = "BCIT",
+                    Host = "BCIT SA",
+                    StartTime = DateTime.Now.Add(new TimeSpan(24,0,0)),
+                    EndTime = DateTime.Now.Add(new TimeSpan(74, 0, 0)),
+                    EventDescription = "Playing League of Legends @ Bcit",
+                    Game = db.Games.FirstOrDefault(g=> g.Title == "League of Legends"),
+                    Title = "League of Legends Tournament at BCIT"
+                });
+                db.Events.Add(new Event
+                {
+                    Creator = db.Users.FirstOrDefault(u=> u.Email == "test@user.com"),
+                    Latitude = 49.248499,
+                    Longitude = -123.001375,
+                    LocationDescription = "BCIT",
+                    Host = "BCIT SA",
+                    StartTime = DateTime.Now.Add(new TimeSpan(24,0,0)),
+                    EndTime = DateTime.Now.Add(new TimeSpan(74, 0, 0)),
+                    EventDescription = "Playing Super Street Fighter II Turbo @ Bcit",
+                    Game = db.Games.FirstOrDefault(g=> g.Title == "Super Street Fighter II Turbo"),
+                    Title = "Super Street Fighter II Turbo Tournament at BCIT"
                 });
 
 
@@ -61,11 +146,14 @@ namespace ggcvan.Data
 
             if (!db.EventGuests.Any())
             {
-                db.EventGuests.Add(new EventGuest
+                foreach (var item in db.Events.ToArray())
                 {
-                   Guest = db.Users.FirstOrDefault(u => u.Email == "test@user.com"),
-                   Event = db.Events.FirstOrDefault(e=> e.Creator.Email == "test@user.com")
-                });
+                    db.EventGuests.Add(new EventGuest
+                    {
+                        Guest = db.Users.FirstOrDefault(u => u.Email == "test@user.com"),
+                        Event = item
+                    });
+                }
             }
             db.SaveChanges();
         }
