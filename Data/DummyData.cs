@@ -85,7 +85,7 @@ namespace ggcvan.Data
                     EndTime = DateTime.Now.Add(new TimeSpan(74, 0, 0)),
                     EventDescription = "Playing Smash @ Bcit",
                     Game = db.Games.FirstOrDefault(g=> g.Title == "Super Smash Brothers"),
-                    Title = "Super Smash Brothers Tournament at BCIT"
+                    Title = "Crazy Super Smash Brothers Tournament at BCIT"
                 });
                 db.Events.Add(new Event
                 {
@@ -98,7 +98,7 @@ namespace ggcvan.Data
                     EndTime = DateTime.Now.Add(new TimeSpan(74, 0, 0)),
                     EventDescription = "Playing MVC @ Bcit",
                     Game = db.Games.FirstOrDefault(g=> g.Title == "Marvel vs Capcom"),
-                    Title = "Marvel vs Capcom Tournament at BCIT"
+                    Title = "Serious Marvel vs Capcom Tournament at BCIT"
                 });
                 db.Events.Add(new Event
                 {
@@ -111,7 +111,33 @@ namespace ggcvan.Data
                     EndTime = DateTime.Now.Add(new TimeSpan(74, 0, 0)),
                     EventDescription = "Playing Defense of the Ancients (DotA) @ Bcit",
                     Game = db.Games.FirstOrDefault(g=> g.Title == "Defense of the Ancients (DotA)"),
-                    Title = "Defense of the Ancients (DotA) Tournament at BCIT"
+                    Title = "Eighth Defense of the Ancients (DotA) Tournament at BCIT"
+                });
+                db.Events.Add(new Event
+                {
+                    Creator = db.Users.FirstOrDefault(u=> u.Email == "test@user.com"),
+                    Latitude = 49.248499,
+                    Longitude = -123.001375,
+                    LocationDescription = "BCIT",
+                    Host = "BCIT SA",
+                    StartTime = DateTime.Now.Add(new TimeSpan(24,0,0)),
+                    EndTime = DateTime.Now.Add(new TimeSpan(74, 0, 0)),
+                    EventDescription = "Playing Super Street Fighter II Turbo @ Bcit",
+                    Game = db.Games.FirstOrDefault(g=> g.Title == "Super Street Fighter II Turbo"),
+                    Title = "Second Super Street Fighter II Turbo Tournament at BCIT"
+                });
+                db.Events.Add(new Event
+                {
+                    Creator = db.Users.FirstOrDefault(u=> u.Email == "test@user.com"),
+                    Latitude = 49.248499,
+                    Longitude = -123.001375,
+                    LocationDescription = "BCIT",
+                    Host = "BCIT SA",
+                    StartTime = DateTime.Now.Add(new TimeSpan(24,0,0)),
+                    EndTime = DateTime.Now.Add(new TimeSpan(74, 0, 0)),
+                    EventDescription = "Playing MVC @ Bcit",
+                    Game = db.Games.FirstOrDefault(g=> g.Title == "Marvel vs Capcom"),
+                    Title = "First Marvel vs Capcom Tournament at BCIT"
                 });
                 db.Events.Add(new Event
                 {
@@ -124,7 +150,20 @@ namespace ggcvan.Data
                     EndTime = DateTime.Now.Add(new TimeSpan(74, 0, 0)),
                     EventDescription = "Playing League of Legends @ Bcit",
                     Game = db.Games.FirstOrDefault(g=> g.Title == "League of Legends"),
-                    Title = "League of Legends Tournament at BCIT"
+                    Title = "Super League of Legends Tournament at BCIT"
+                });
+                db.Events.Add(new Event
+                {
+                    Creator = db.Users.FirstOrDefault(u=> u.Email == "test@user.com"),
+                    Latitude = 49.248499,
+                    Longitude = -123.001375,
+                    LocationDescription = "BCIT",
+                    Host = "BCIT SA",
+                    StartTime = DateTime.Now.Add(new TimeSpan(24,0,0)),
+                    EndTime = DateTime.Now.Add(new TimeSpan(74, 0, 0)),
+                    EventDescription = "Playing Smash @ Bcit",
+                    Game = db.Games.FirstOrDefault(g=> g.Title == "Super Smash Brothers"),
+                    Title = "Say what?! Super Smash Brothers Tournament at BCIT!?"
                 });
                 db.Events.Add(new Event
                 {
@@ -139,6 +178,7 @@ namespace ggcvan.Data
                     Game = db.Games.FirstOrDefault(g=> g.Title == "Super Street Fighter II Turbo"),
                     Title = "Super Street Fighter II Turbo Tournament at BCIT"
                 });
+                
 
 
             }
