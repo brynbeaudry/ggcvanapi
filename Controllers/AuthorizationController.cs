@@ -395,6 +395,7 @@ public class AuthorizationController : Controller
                 //this signed in google user is not a repeat user and hasn't been saved yet
                 if(repeatUser == null)
                 {
+
                     var result = await _userManager.CreateAsync(
                     new ApplicationUser(){ 
                         Email = googleDetails.Email,
@@ -432,6 +433,9 @@ public class AuthorizationController : Controller
             identity.AddClaim(OpenIdConnectConstants.Claims.Subject,
                     googleDetails.ProviderUserId,
                     OpenIdConnectConstants.Destinations.AccessToken);
+            identity.AddClaim(OpenIdConnectConstants.Claims.SecurityStamp,
+                    SConvert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8),
+                    OpenIdConnectConstants.Destinations.AccessToken)
             identity.AddClaim(OpenIdConnectConstants.Claims.Name, googleDetails.Name,
                     OpenIdConnectConstants.Destinations.AccessToken);
             identity.AddClaim(OpenIdConnectConstants.Claims.Email, 
