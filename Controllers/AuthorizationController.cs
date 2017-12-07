@@ -32,6 +32,7 @@ public class AuthorizationController : Controller
 
         private readonly ApplicationDbContext _ctx;
         private const string GoogleApiTokenInfoUrl = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={0}";
+        private const string GoogleApiUserInfoUrl = "https://www.googleapis.com/plus/v1/people/{0}?userIp={1}&key={2}";
         private const string FacebookApiUserInfoUrl = "https://graph.facebook.com/{2}?input_token={0}&access_token={1}&fields={3}";
         private const string FacebookApiTokenInfoUrl = "https://graph.facebook.com/debug_token?input_token={0}&access_token={1}";
         
@@ -58,26 +59,13 @@ public class AuthorizationController : Controller
 
         var httpClient = new HttpClient();
         var requestUri = new Uri(string.Format(GoogleApiTokenInfoUrl, providerToken));
-        
-        HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
-        try
-        {
-            httpResponseMessage = await httpClient.GetAsync(requestUri);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine(ex.Message);
-            return null;
-        }
 
-        if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
-        {
-            //Console.WriteLine(ex.Message);
-            return null;
-        }
+        var tokenInfoResponse = await getHttpResponseResult(GoogleApiTokenInfoUrl, providerToken, "GOOGLE");
 
-        var response = httpResponseMessage.Content.ReadAsStringAsync().Result;
-        var googleApiTokenInfo = JsonConvert.DeserializeObject<GoogleApiTokenInfo>(response);
+        GoogleApiTokenInfo googleApiTokenInfo = JsonConvert.DeserializeObject<GoogleApiTokenInfo>(tokenInfoResponse.ToString());
+
+        var googleUserInfoResponse = await getHttpResponseResult(GoogleApiUserInfoUrl, providerToken, "GOOGLE", googleApiTokenInfo.sub);
+        GooglePersonInfo googleUserInfo = JsonConvert.DeserializeObject<GooglePersonInfo>(googleUserInfoResponse);
 
         /* if (!SupportedClientsIds.Contains(googleApiTokenInfo.aud))
         {
@@ -87,31 +75,52 @@ public class AuthorizationController : Controller
 
         return new ProviderUserDetails
         {
-            Email = googleApiTokenInfo.email,
-            FirstName = googleApiTokenInfo.given_name,
-            LastName = googleApiTokenInfo.family_name,
-            Locale = googleApiTokenInfo.locale,
-            Name = googleApiTokenInfo.name,
-            ProviderUserId = googleApiTokenInfo.sub
+            Email = googleApiTokenInfo.email ?? "NONE",
+            FirstName = googleApiTokenInfo.given_name ?? googleUserInfo.name["givenName"] ?? "NOT AVAILABLE",
+            LastName = googleApiTokenInfo.family_name ?? googleUserInfo.name["familyName"] ?? "NOT AVAILABLE",
+            Locale = googleApiTokenInfo.locale ?? "EN-us",
+            Name = googleApiTokenInfo.name ?? $"{googleUserInfo.name["givenName"]} {googleUserInfo.name["familyName"]}",
+            ProviderUserId = googleApiTokenInfo.sub ?? googleUserInfo.id
         };
     }
 
-    public async Task<string> getHttpResponseResult(string url, string providerToken, bool facebook = false, string facebookId = ""){
+    public async Task<string> getHttpResponseResult(string url, string providerToken, string providerName, string ProviderUserId=""){
         var httpClient = new HttpClient();
-        Uri RequestUri = new Uri(string.Format(GoogleApiTokenInfoUrl, providerToken));
-        if(facebook)
+        Uri RequestUri;
+        // new Uri(string.Format(GoogleApiTokenInfoUrl, providerToken));
+        if(providerName == "FACEBOOK")
         {
             var FacebookConfig = _config.GetSection("ExternalIdentities").GetSection("Facebook");
             var AppId = FacebookConfig["app_id"];
             var AppSecret = FacebookConfig["app_secret"];
-            if(facebookId.CompareTo("") == 0){
+            if(ProviderUserId.CompareTo("") == 0){
                 //facebook id is nothing
                 RequestUri = new Uri(string.Format(url, providerToken, $"{AppId}|{AppSecret}"));
             }else{
-                //have fb id
-                RequestUri = new Uri(string.Format(url, providerToken, $"{AppId}|{AppSecret}", facebookId, "id,email,name,about,first_name,last_name,locale"));
+                //have provider user id , get user id
+                RequestUri = new Uri(string.Format(url, providerToken, $"{AppId}|{AppSecret}", ProviderUserId, "id,email,name,about,first_name,last_name,locale"));
             }
         }
+        else if(providerName == "GOOGLE"){
+            var GoogleConfig = _config.GetSection("ExternalIdentities").GetSection("Google");
+            var GoogleApiKey = GoogleConfig["api_key"];
+
+            /* private const string GoogleApiTokenInfoUrl = "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token={0}";
+            private const string GoogleApiUserInfoUrl = "https://www.googleapis.com/plus/v1/people/{0}?userIp={1}&key={2}"; */
+
+            if(ProviderUserId.CompareTo("") == 0){
+                //fprovider id is nothing, get token info
+                RequestUri = new Uri(string.Format(url, providerToken));
+            }else{
+                //have provider user id , get user info
+                RequestUri = new Uri(string.Format(url, ProviderUserId, providerToken, GoogleApiKey));
+            }
+        }
+        else
+        {
+            return "NEITHER GOOGLE NOR FACEBOOK";
+        }
+        
         HttpResponseMessage httpResponseMessage = new HttpResponseMessage();
         httpResponseMessage = await httpClient.GetAsync(RequestUri);
 
@@ -129,14 +138,14 @@ public class AuthorizationController : Controller
     {
         
 
-        var tokenInfoResponse = await getHttpResponseResult(FacebookApiTokenInfoUrl, providerToken, true);
+        var tokenInfoResponse = await getHttpResponseResult(FacebookApiTokenInfoUrl, providerToken, "FACEBOOK");
         var responseDataWrapper = JObject.Parse(tokenInfoResponse);
         //the actual memebers of interest are wrapped in data key
         var unwrappedResponse = responseDataWrapper.GetValue("data");
 
         FacebookApiTokenInfo facebookApiTokenInfo = JsonConvert.DeserializeObject<FacebookApiTokenInfo>(unwrappedResponse.ToString());
         
-        var fbUserInfoResponse = await getHttpResponseResult(FacebookApiUserInfoUrl, providerToken, true, facebookApiTokenInfo.user_id);
+        var fbUserInfoResponse = await getHttpResponseResult(FacebookApiUserInfoUrl, providerToken, "FACEBOOK", facebookApiTokenInfo.user_id);
         var fbUserInfo = JsonConvert.DeserializeObject<FacebookApiUserInfo>(fbUserInfoResponse);
 
         /* if (!SupportedClientsIds.Contains(googleApiTokenInfo.aud))
