@@ -442,9 +442,6 @@ public class AuthorizationController : Controller
             identity.AddClaim(OpenIdConnectConstants.Claims.Subject,
                     googleDetails.ProviderUserId,
                     OpenIdConnectConstants.Destinations.AccessToken);
-            identity.AddClaim(OpenIdConnectConstants.Claims.SecurityStamp,
-                    SConvert.ToBase64String(Guid.NewGuid().ToByteArray()).Substring(0, 8).ToString(),
-                    OpenIdConnectConstants.Destinations.AccessToken);
             identity.AddClaim(OpenIdConnectConstants.Claims.Name, googleDetails.Name,
                     OpenIdConnectConstants.Destinations.AccessToken);
             identity.AddClaim(OpenIdConnectConstants.Claims.Email, 
