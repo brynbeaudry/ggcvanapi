@@ -201,8 +201,11 @@ public class AuthorizationController : Controller
                         ErrorDescription = "Only confidential clients are allowed to use password grant type."
                     });
                 } */
-
-                var user = await _userManager.FindByEmailAsync(request.Username);
+                var user = _ctx.Users
+                    .Where(x=> x.Email.Equals(request.Username))
+                    .Where(x => x.ProviderName.Equals("EMAIL"))
+                    .FirstOrDefault();
+                //var user = await _userManager.FindByEmailAsync(request.Username);
 
                 if (user == null)
                 {
@@ -262,7 +265,7 @@ public class AuthorizationController : Controller
                 {
                     await _userManager.ResetAccessFailedCountAsync(user);
                 }
-
+                
                 var identity = new ClaimsIdentity(OpenIdConnectServerDefaults.AuthenticationScheme);
 
                 identity.AddClaim(OpenIdConnectConstants.Claims.Subject,
