@@ -16,74 +16,59 @@ using AspNet.Security.OAuth.Validation;
 namespace ggcvan.Controllers.api
 {
     [Produces("application/json")]
-    [Route("api/Events")]
-    public class EventsController : Controller
+    [Route("api/Games")]
+    public class GamesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public EventsController(ApplicationDbContext context)
+        public GamesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: api/Events
+        // GET: api/Games
         [HttpGet]
-        public IEnumerable<Event> GetEvents()
+        public IEnumerable<Game> GetGames()
         {
-            return _context.Events
-                .Include(m => m.Game);
+            return _context.Games;
         }
 
-        // GET: api/Events/5
+        // GET: api/Games/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetEvent([FromRoute] int id)
+        public async Task<IActionResult> GetGame([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var @event = await _context.Events
-                .Include(m => m.Game)
-                .Include(m => m.EventGuests)
-                    .ThenInclude(eg => eg.Guest)
+            var @game = await _context.Games
                 .FirstOrDefaultAsync(m => m.Id == id);
 
-            if (@event == null)
+            if (@game == null)
             {
                 return NotFound();
             }
 
-            @event.Creator.SerializeBio=false;
-            @event.Creator.SerializeJE=false;
-            @event.Creator.SerializeCE=false;
-            foreach (var ev in @event.EventGuests)
-            {
-                @event.Creator.SerializeBio = true;
-                @event.Creator.SerializeJE = false;
-                @event.Creator.SerializeCE = false;
-            }
-            //var @eventJson = new JObject(@event);
-
-            return Ok(@event);
+            return Ok(@game);
         }
 
-        // PUT: api/Events/5
+        // PUT: api/Games/5
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> PutEvent([FromRoute] int id, [FromBody] Event @event)
+        public async Task<IActionResult> PutGame([FromRoute] int id, [FromBody] Game @game)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != @event.Id)
+            if (id != @game.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(@event).State = EntityState.Modified;
+            _context.Entry(@game).State = EntityState.Modified;
 
             try
             {
@@ -91,7 +76,7 @@ namespace ggcvan.Controllers.api
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!EventExists(id))
+                if (!GameExists(id))
                 {
                     return NotFound();
                 }
@@ -104,47 +89,47 @@ namespace ggcvan.Controllers.api
             return NoContent();
         }
 
-        // POST: api/Events
+        // POST: api/Games
         [HttpPost]
         [Authorize(AuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme)]
-                public async Task<IActionResult> PostEvent([FromBody] Event @event)
+                public async Task<IActionResult> PostGame([FromBody] Game @game)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Events.Add(@event);
+            _context.Games.Add(@game);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEvent", new { id = @event.Id }, @event);
+            return CreatedAtAction("GetGame", new { id = @game.Id }, @game);
         }
 
-        // DELETE: api/Events/5
+        // DELETE: api/Games/5
         [Authorize(AuthenticationSchemes = OAuthValidationDefaults.AuthenticationScheme)]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEvent([FromRoute] int id)
+        public async Task<IActionResult> DeleteGame([FromRoute] int id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var @event = await _context.Events.SingleOrDefaultAsync(m => m.Id == id);
-            if (@event == null)
+            var @game = await _context.Games.SingleOrDefaultAsync(m => m.Id == id);
+            if (@game == null)
             {
                 return NotFound();
             }
 
-            _context.Events.Remove(@event);
+            _context.Games.Remove(@game);
             await _context.SaveChangesAsync();
 
-            return Ok(@event);
+            return Ok(@game);
         }
 
-        private bool EventExists(int id)
+        private bool GameExists(int id)
         {
-            return _context.Events.Any(e => e.Id == id);
+            return _context.Games.Any(e => e.Id == id);
         }
     }
 }
